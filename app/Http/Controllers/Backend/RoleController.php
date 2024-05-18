@@ -34,7 +34,7 @@ class RoleController extends Controller
 
     public function getRoleList(Request $request){
         $data = Role::all();
-        return Datatables::of($data)
+        return DataTables::of($data)
 
         ->addColumn('action', function ($row) {
             $btn = '';

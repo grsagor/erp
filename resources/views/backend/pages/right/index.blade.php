@@ -76,7 +76,8 @@
 
             getRight();
 
-            $(document).on('click', '.edit_btn', function(e) {
+            $(document).ready(function() {
+                $(document).on('click', '.edit_btn', function(e) {
                 e.preventDefault();
                 let id = $(this).attr('data-id');
                 $.ajax({
@@ -130,6 +131,7 @@
                         
                     }
                 })
+            })
             })
             
         </script>

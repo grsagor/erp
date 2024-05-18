@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\SettingController;
@@ -70,5 +71,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::any('/update/{id}', [UserController::class, 'update'])->name('admin.user.update');
         Route::get('/delete/{id}', [UserController::class, 'delete'])->name('admin.user.delete');
         Route::post('/change', [UserController::class, 'changePassword'])->name('admin.user.changepassword');
+    });
+
+    Route::group(['prefix' => '/employee'], function () {
+        Route::get('/', [EmployeeController::class, 'index'])->name('admin.employee.index');
+        Route::get('/get/list', [EmployeeController::class, 'getList'])->name('admin.employee.get.list');
+        Route::post('/store', [EmployeeController::class, 'store'])->name('admin.employee.store');
+        Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('admin.employee.edit');
+        Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('admin.employee.update');
+        Route::get('/delete/{id}', [EmployeeController::class, 'delete'])->name('admin.employee.delete');
     });
 });

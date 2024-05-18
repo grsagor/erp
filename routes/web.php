@@ -77,8 +77,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('admin.employee.index');
         Route::get('/get/list', [EmployeeController::class, 'getList'])->name('admin.employee.get.list');
         Route::post('/store', [EmployeeController::class, 'store'])->name('admin.employee.store');
-        Route::get('/edit/{id}', [EmployeeController::class, 'edit'])->name('admin.employee.edit');
-        Route::post('/update/{id}', [EmployeeController::class, 'update'])->name('admin.employee.update');
-        Route::get('/delete/{id}', [EmployeeController::class, 'delete'])->name('admin.employee.delete');
+        Route::get('/edit', [EmployeeController::class, 'edit'])->name('admin.employee.edit');
+        Route::post('/update', [EmployeeController::class, 'update'])->name('admin.employee.update');
+        Route::get('/delete', [EmployeeController::class, 'delete'])->name('admin.employee.delete');
     });
 });

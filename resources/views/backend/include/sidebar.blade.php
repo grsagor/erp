@@ -93,27 +93,21 @@
                     </a>
                 @endif
 
-                @if (Helper::hasRight('setting.view'))
+                @if (Helper::hasRight('hr.view'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#hrNav"
-                        aria-expanded="@if (Route::is('admin.setting.general') ||
-                                Route::is('admin.setting.static.content') ||
-                                Route::is('admin.setting.legal.content') ||
-                                Route::is('admin.contact') ||
-                                Route::is('admin.resource')) true @else false @endif"
+                        aria-expanded="@if (Route::is('admin.employee.index') ||
+                                Route::is('admin.employee.index')) true @else false @endif"
                         aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div> HR Management
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="collapse @if (Route::is('admin.setting.general') ||
-                            Route::is('admin.setting.static.content') ||
-                            Route::is('admin.setting.legal.content') ||
-                            Route::is('admin.contact') ||
-                            Route::is('admin.resource')) show @endif" id="hrNav"
+                    <div class="collapse @if (Route::is('admin.employee.index') ||
+                            Route::is('admin.employee.index')) show @endif" id="hrNav"
                         aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav down">
-                            @if (Helper::hasRight('setting.general'))
-                                <a class="nav-link {{ Route::is('admin.setting.general') ? 'active' : '' }}"
-                                    href="{{ route('admin.setting.general') }}"><i
+                            @if (Helper::hasRight('employee.view'))
+                                <a class="nav-link {{ Route::is('admin.employee.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.employee.index') }}"><i
                                         class="fa-solid fa-angles-right ikon"></i> Employee Management </a>
                             @endif
                         </nav>

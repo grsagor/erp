@@ -44,7 +44,7 @@
     <script src="{{ asset('vendor/datatable/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
     <script src="{{ asset('vendor/sweetalert2/sweetalert2.js') }}" crossorigin="anonymous"></script>
-    <script src="{{ asset('assets/js/backend/validator.js') }}"></script>
+    <script src="{{ asset('vendor/validator/validator.js') }}"></script>
 
 
     <script>
@@ -80,6 +80,16 @@
             }
         }
 
+        function previewImage(input, previewContainerClass) {
+            var preview = document.querySelector(previewContainerClass);
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         $('.select2').select2();
     </script>

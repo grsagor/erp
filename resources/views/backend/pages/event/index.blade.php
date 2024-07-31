@@ -127,12 +127,7 @@
                         contentType: false,
                         success: function(response) {
                             let heading = response.type.charAt(0).toUpperCase() + response.type.slice(1);
-                            $.toast({
-                                heading: heading,
-                                text: response.message,
-                                position: 'top-center',
-                                icon: response.type
-                            })
+                            toastr.success(response.msg);
                             $('#dataTable').DataTable().destroy();
                             getArtist();
                             form.reset();
@@ -191,12 +186,7 @@
                         contentType: false,
                         success: function(response) {
                             let heading = response.type.charAt(0).toUpperCase() + response.type.slice(1);
-                            $.toast({
-                                heading: heading,
-                                text: response.message,
-                                position: 'top-center',
-                                icon: response.type
-                            })
+                            toastr.success(response.msg);
                             $('#dataTable').DataTable().destroy();
                             getArtist();
                             $('#editModal').modal('hide');
@@ -240,12 +230,7 @@
                             success: function(response) {
                                 let heading = response.type.charAt(0).toUpperCase() + response.type
                                     .slice(1);
-                                $.toast({
-                                    heading: heading,
-                                    text: response.message,
-                                    position: 'top-center',
-                                    icon: response.type
-                                })
+                                toastr.success(response.msg);
                                 $('#dataTable').DataTable().destroy();
                                 getArtist();
                             }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\User;
@@ -9,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
-use Helper;
 
 class EmployeeController extends Controller
 {
@@ -96,7 +96,6 @@ class EmployeeController extends Controller
     }
 
     public function update(Request $request){
-        $user = User::find($request->id);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',

@@ -25,7 +25,7 @@ class SettingController extends Controller
 
             if (!$this->user || $this->user->role == 2 || Helper::hasRight('user.view') == false) {
                 session()->flash('error', 'You can not access! Login first.');
-                return redirect()->route('admin');
+                return redirect()->route('admin.index');
             }
             return $next($request);
         });

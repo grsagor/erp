@@ -13,7 +13,7 @@
         <div class="sb-sidenav-menu">
 
             <div class="nav">
-                @if (Helper::hasRight('setting.view'))
+                {{-- @if (Helper::hasRight('setting.view'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#settingNav"
                         aria-expanded="@if (Route::is('admin.setting.general') ||
                                 Route::is('admin.setting.static.content') ||
@@ -50,7 +50,7 @@
                             @endif
                         </nav>
                     </div>
-                @endif
+                @endif --}}
 
 
                 {{-- admin  --}}
@@ -96,19 +96,69 @@
                 @if (Helper::hasRight('hr.view'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#hrNav"
                         aria-expanded="@if (Route::is('admin.employee.index') ||
-                                Route::is('admin.employee.index')) true @else false @endif"
+                                Route::is('admin.attendance.index')) true @else false @endif"
                         aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div> HR Management
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse @if (Route::is('admin.employee.index') ||
-                            Route::is('admin.employee.index')) show @endif" id="hrNav"
+                            Route::is('admin.attendance.index')) show @endif" id="hrNav"
                         aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav down">
                             @if (Helper::hasRight('employee.view'))
                                 <a class="nav-link {{ Route::is('admin.employee.index') ? 'active' : '' }}"
                                     href="{{ route('admin.employee.index') }}"><i
                                         class="fa-solid fa-angles-right ikon"></i> Employee Management </a>
+                            @endif
+                            @if (Helper::hasRight('attendance.view'))
+                                <a class="nav-link {{ Route::is('admin.attendance.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.attendance.index') }}"><i
+                                        class="fa-solid fa-angles-right ikon"></i> Attendance Management </a>
+                            @endif
+                        </nav>
+                    </div>
+                @endif
+                @if (Helper::hasRight('hr.view'))
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#salesnorderNav"
+                        aria-expanded="@if (Route::is('admin.customer.index') ||
+                                Route::is('admin.customer.index')) true @else false @endif"
+                        aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div> Customer & Order
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse @if (Route::is('admin.customer.index') ||
+                            Route::is('admin.order.index')) show @endif" id="salesnorderNav"
+                        aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav down">
+                            @if (Helper::hasRight('customer.view'))
+                                <a class="nav-link {{ Route::is('admin.customer.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.customer.index') }}"><i
+                                        class="fa-solid fa-angles-right ikon"></i> Customer Management </a>
+                            @endif
+                            @if (Helper::hasRight('order.view'))
+                                <a class="nav-link {{ Route::is('admin.order.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.order.index') }}"><i
+                                        class="fa-solid fa-angles-right ikon"></i> Order Management </a>
+                            @endif
+                        </nav>
+                    </div>
+                @endif
+                @if (Helper::hasRight('hr.view'))
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#rawMaterialsNav"
+                        aria-expanded="@if (Route::is('admin.typeofrawmaterials.index') ||
+                                Route::is('admin.typeofrawmaterials.index')) true @else false @endif"
+                        aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div> Raw Materials
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse @if (Route::is('admin.typeofrawmaterials.index') ||
+                            Route::is('admin.order.index')) show @endif" id="rawMaterialsNav"
+                        aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav down">
+                            @if (Helper::hasRight('typeofrawmaterials.view'))
+                                <a class="nav-link {{ Route::is('admin.typeofrawmaterials.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.typeofrawmaterials.index') }}"><i
+                                        class="fa-solid fa-angles-right ikon"></i> Material Type Management </a>
                             @endif
                         </nav>
                     </div>

@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Role | '.Helper::getSettings('application_name') ?? 'Machine Tool Solution')
+@section('title', 'Role | '.Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
         <h4 class="mt-2">Role Create</h4>

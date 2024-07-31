@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'User | '.Helper::getSettings('application_name') ?? 'Machine Tool Solution')
+@section('title', 'User | '.Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
         <h4 class="mt-2">User Management</h4>
@@ -165,12 +165,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            $.toast({
-                                heading: 'Success',
-                                text: response.message,
-                                position: 'top-center',
-                                icon: 'success'
-                            })
+                            toastr.success(response.msg);
                             $('#dataTable').DataTable().destroy();
                             getusers();
                             $('#createModal').modal('hide');
@@ -217,12 +212,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            $.toast({
-                                heading: 'Success',
-                                text: response.message,
-                                position: 'top-center',
-                                icon: 'success'
-                            })
+                            toastr.success(response.msg);
                             $('#dataTable').DataTable().destroy();
                             getusers();
                             $('#editModal').modal('hide');
@@ -257,19 +247,9 @@
                             dataType: "json",
                             success: function (data) {
                                 if (data.success) {
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: data.success,
-                                        position: 'top-center',
-                                        icon: 'success'
-                                    })
+                                    toastr.success(response.msg);
                                 } else {
-                                    $.toast({
-                                        heading: 'Error',
-                                        text: data.error,
-                                        position: 'top-center',
-                                        icon: 'error'
-                                    })
+                                    toastr.error(response.msg);
                                 }
                                 $('#dataTable').DataTable().destroy();
                                 getusers();
@@ -312,12 +292,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            $.toast({
-                                heading: 'Success',
-                                text: response.message,
-                                position: 'top-center',
-                                icon: 'success'
-                            })
+                            toastr.success(response.msg);
                             $('#dataTable').DataTable().destroy();
                             getusers();
                             $('#changePasswordModal').modal('hide');

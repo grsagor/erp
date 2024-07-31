@@ -21,6 +21,7 @@
     <link href="{{ asset('vendor/datatable/jquery.dataTables.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/summernote/summernote.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('vendor/datepicker/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/backend/css/style.css') }}" rel="stylesheet" />
     <link rel="shortcut icon" href="{{ asset(Helper::getSettings('site_favicon')) }}" />
     @yield('css')
@@ -37,38 +38,18 @@
 
         </div>
     </div>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/backend/js/scripts.js') }}"></script>
     <script src="{{ asset('vendor/jQuery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('vendor/datatable/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('vendor/sweetalert2/sweetalert2.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ asset('vendor/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('vendor/datepicker/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('vendor/validator/validator.js') }}"></script>
 
 
     <script>
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                $.toast({
-                    heading: 'Error',
-                    text: "{{ $error }}",
-                    position: 'top-center',
-                    icon: 'error'
-                })
-            @endforeach
-        @endif
-
-        @if (session()->has('success'))
-            $.toast({
-                heading: 'Success',
-                text: "{{ session()->get('success') }}",
-                position: 'top-center',
-                icon: 'success'
-            })
-        @endif
-
-
         function previewFile(input, preview) {
             var file = $("#" + input + "").get(0).files[0];
             if (file) {
@@ -93,7 +74,9 @@
 
         $('.select2').select2();
     </script>
-    @stack('footer')
+    
+    @include('shared.toastr')
+    @yield('script')
 </body>
 
 </html>

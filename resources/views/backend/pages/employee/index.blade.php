@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Employee | ' . Helper::getSettings('application_name') ?? 'Machine Tool Solution')
+@section('title', 'Employee | ' . Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
         <h4 class="mt-2">Employee Management</h4>
@@ -27,7 +27,6 @@
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -39,248 +38,215 @@
         </div>
     </div>
     @include('backend.pages.employee.modal')
-    @push('footer')
-        <script type="text/javascript">
-            function initialDatatable(name = null, email = null, phone = null) {
-                var table = jQuery('#dataTable').DataTable({
-                    responsive: true,
-                    processing: true,
-                    serverSide: true,
-                    ajax: {
-                        url: "{{ route('admin.employee.get.list') }}",
-                        type: 'GET',
-                        data: {
-                            'name': name,
-                            'email': email,
-                            'phone': phone
-                        },
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    function initialDatatable(name = null, email = null, phone = null) {
+        var table = jQuery('#dataTable').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('admin.employee.get.list') }}",
+                type: 'GET',
+                data: {
+                    'name': name,
+                    'email': email,
+                    'phone': phone
+                },
+            },
+            aLengthMenu: [
+                [25, 50, 100, 500, 5000, -1],
+                [25, 50, 100, 500, 5000, "All"]
+            ],
+            iDisplayLength: 25,
+            "order": [
+                [2, 'asc']
+            ],
+            columns: [{
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row, meta) {
+                        return meta.row + 1;
                     },
-                    aLengthMenu: [
-                        [25, 50, 100, 500, 5000, -1],
-                        [25, 50, 100, 500, 5000, "All"]
-                    ],
-                    iDisplayLength: 25,
-                    "order": [
-                        [2, 'asc']
-                    ],
-                    columns: [{
-                            data: null,
-                            orderable: false,
-                            searchable: false,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1;
-                            },
-                        },
-                        {
-                            data: 'image',
-                            name: 'image',
-                            orderable: false,
-                            searchable: false,
-                            "className": "text-center"
-                        },
-                        {
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
-                            data: 'email',
-                            name: 'email'
-                        },
-                        {
-                            data: 'phone',
-                            name: 'phone'
-                        },
-                        {
-                            data: 'id',
-                            name: 'id'
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false,
-                            "className": "text-center w-10"
-                        },
-                    ]
-                });
+                },
+                {
+                    data: 'image',
+                    name: 'image',
+                    orderable: false,
+                    searchable: false,
+                    "className": "text-center"
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'phone',
+                    name: 'phone'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false,
+                    "className": "text-center w-10"
+                },
+            ]
+        });
+    }
+    initialDatatable();
+
+    $(document).on('click', '#filterBtn', function(e) {
+        e.preventDefault();
+        let name = $('#filter_form #name').val();
+        let email = $('#filter_form #email').val();
+        let phone = $('#filter_form #phone').val();
+
+        $('#dataTable').DataTable().destroy();
+        initialDatatable(name, email, phone);
+    })
+
+    $(document).on('click', '#submitCreateForm', function(e) {
+        e.preventDefault();
+        let go_next_step = true;
+        if ($(this).attr('data-check-area') && $(this).attr('data-check-area').trim() !== '') {
+            go_next_step = check_validation_Form('#createModal .' + $(this).attr('data-check-area'));
+        }
+        if (go_next_step == true) {
+            let form = document.getElementById('createForm');
+            var formData = new FormData(form);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('admin.employee.store') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.status) {
+                        toastr.success(response.msg);
+                        $('#dataTable').DataTable().destroy();
+                        initialDatatable();
+                        $('#createModal').modal('hide');
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = '';
+                    $.each(xhr.responseJSON.errors, function(key, value) {
+                        errorMessage += ('' + value + '<br>');
+                    });
+                    $('#createForm .server_side_error').html(
+                        '<div class="alert alert-danger" role="alert">' + errorMessage +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                        );
+                },
+            })
+        }
+    })
+
+    $(document).on('click', '.edit_btn', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('data-id');
+        $.ajax({
+            url: "{{ route('admin.employee.edit') }}",
+            type: "GET",
+            data: {
+                id: id
+            },
+            dataType: "html",
+            success: function(data) {
+                $('#editModal .modal-content').html(data);
+                $('#editModal').modal('show');
             }
-            initialDatatable();
+        })
+    });
 
-            $(document).on('click', '#filterBtn', function(e) {
-                e.preventDefault();
-                let name = $('#filter_form #name').val();
-                let email = $('#filter_form #email').val();
-                let phone = $('#filter_form #phone').val();
-
-                $('#dataTable').DataTable().destroy();
-                initialDatatable(name, email, phone);
+    $(document).on('click', '#submitEditForm', function(e) {
+        e.preventDefault();
+        let go_next_step = true;
+        if ($(this).attr('data-check-area') && $(this).attr('data-check-area').trim() !== '') {
+            go_next_step = check_validation_Form('#editModal .' + $(this).attr('data-check-area'));
+        }
+        if (go_next_step == true) {
+            let form = document.getElementById('editForm');
+            var formData = new FormData(form);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('admin.employee.update') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.status) {
+                        toastr.success(response.msg);
+                        $('#dataTable').DataTable().destroy();
+                        initialDatatable();
+                        $('#editModal').modal('hide');
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = '';
+                    $.each(xhr.responseJSON.errors, function(key, value) {
+                        errorMessage += ('' + value + '<br>');
+                    });
+                    $('#editForm .server_side_error').html(
+                        '<div class="alert alert-danger" role="alert">' + errorMessage +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                        );
+                },
             })
+        }
+    })
 
-            $(document).on('click', '#submitCreateForm', function(e) {
-                e.preventDefault();
-                let go_next_step = true;
-                if ($(this).attr('data-check-area') && $(this).attr('data-check-area').trim() !== '') {
-                    go_next_step = check_validation_Form('#createModal .' + $(this).attr('data-check-area'));
-                }
-                if (go_next_step == true) {
-                    let form = document.getElementById('createForm');
-                    var formData = new FormData(form);
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url: "{{ route('admin.employee.store') }}",
-                        type: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            if (response.status) {
-                                $.toast({
-                                    heading: 'Success',
-                                    text: response.msg,
-                                    position: 'top-center',
-                                    icon: 'success'
-                                })
-                                $('#dataTable').DataTable().destroy();
-                                initialDatatable();
-                                $('#createModal').modal('hide');
-                            } else {
-                                $.toast({
-                                    heading: 'Error',
-                                    text: response.msg,
-                                    position: 'top-center',
-                                    icon: 'success'
-                                })
-                            }
-                        },
-                        error: function(xhr) {
-                            let errorMessage = '';
-                            $.each(xhr.responseJSON.errors, function(key, value) {
-                                errorMessage += ('' + value + '<br>');
-                            });
-                            $('#createForm .server_side_error').html(
-                                '<div class="alert alert-danger" role="alert">' + errorMessage +
-                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-                                );
-                        },
-                    })
-                }
-            })
-
-            $(document).on('click', '.edit_btn', function(e) {
-                e.preventDefault();
-                let id = $(this).attr('data-id');
+    $(document).on('click', '.delete_btn', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ route('admin.employee.edit') }}",
+                    url: "{{ route('admin.employee.delete') }}",
                     type: "GET",
                     data: {
                         id: id
                     },
-                    dataType: "html",
-                    success: function(data) {
-                        $('#editModal .modal-content').html(data);
-                        $('#editModal').modal('show');
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.status) {
+                            toastr.success(response.msg);
+                            $('#dataTable').DataTable().destroy();
+                            initialDatatable();
+                        } else {
+                            toastr.error(response.msg);
+                        }
                     }
                 })
-            });
 
-            $(document).on('click', '#submitEditForm', function(e) {
-                e.preventDefault();
-                let go_next_step = true;
-                if ($(this).attr('data-check-area') && $(this).attr('data-check-area').trim() !== '') {
-                    go_next_step = check_validation_Form('#editModal .' + $(this).attr('data-check-area'));
-                }
-                if (go_next_step == true) {
-                    let form = document.getElementById('editForm');
-                    var formData = new FormData(form);
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url: "{{ route('admin.employee.update') }}",
-                        type: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            if (response.status) {
-                                $.toast({
-                                    heading: 'Success',
-                                    text: response.msg,
-                                    position: 'top-center',
-                                    icon: 'success'
-                                })
-                                $('#dataTable').DataTable().destroy();
-                                initialDatatable();
-                                $('#editModal').modal('hide');
-                            } else {
-                                $.toast({
-                                    heading: 'Error',
-                                    text: response.msg,
-                                    position: 'top-center',
-                                    icon: 'success'
-                                })
-                            }
-                        },
-                        error: function(xhr) {
-                            let errorMessage = '';
-                            $.each(xhr.responseJSON.errors, function(key, value) {
-                                errorMessage += ('' + value + '<br>');
-                            });
-                            $('#editForm .server_side_error').html(
-                                '<div class="alert alert-danger" role="alert">' + errorMessage +
-                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-                                );
-                        },
-                    })
-                }
-            })
-
-            $(document).on('click', '.delete_btn', function(e) {
-                e.preventDefault();
-                let id = $(this).attr('data-id');
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{ route('admin.employee.delete') }}",
-                            type: "GET",
-                            data: {
-                                id: id
-                            },
-                            dataType: "json",
-                            success: function(response) {
-                                if (response.status) {
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: response.msg,
-                                        position: 'top-center',
-                                        icon: 'success'
-                                    })
-                                    $('#dataTable').DataTable().destroy();
-                                    initialDatatable();
-                                } else {
-                                    $.toast({
-                                        heading: 'Error',
-                                        text: response.msg,
-                                        position: 'top-center',
-                                        icon: 'success'
-                                    })
-                                }
-                            }
-                        })
-
-                    }
-                })
-            })
-        </script>
-    @endpush
+            }
+        })
+    })
+</script>
 @endsection

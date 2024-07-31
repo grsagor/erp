@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Backend\AttendanceController;
+use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EmployeeController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProfileController;
+use App\Http\Controllers\Backend\RawmaterialsController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\SettingController;
+use App\Http\Controllers\Backend\TypeofRawmaterialsController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +67,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::any('/right/update/{id}', [RoleController::class, 'roleRightUpdate'])->name('admin.role.right.update');
         Route::get('/right/delete/{id}', [RoleController::class, 'rightDelete'])->name('admin.role.right.delete');
     });
-
     Route::group(['prefix' => '/user'], function () {
         Route::get('/', [UserController::class, 'index'])->name('admin.user');
         Route::get('/get/list', [UserController::class, 'getList']);
@@ -72,7 +76,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/delete/{id}', [UserController::class, 'delete'])->name('admin.user.delete');
         Route::post('/change', [UserController::class, 'changePassword'])->name('admin.user.changepassword');
     });
-
     Route::group(['prefix' => '/employee'], function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('admin.employee.index');
         Route::get('/get/list', [EmployeeController::class, 'getList'])->name('admin.employee.get.list');
@@ -80,5 +83,42 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/edit', [EmployeeController::class, 'edit'])->name('admin.employee.edit');
         Route::post('/update', [EmployeeController::class, 'update'])->name('admin.employee.update');
         Route::get('/delete', [EmployeeController::class, 'delete'])->name('admin.employee.delete');
+    });
+    Route::group(['prefix' => '/customer'], function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('admin.customer.index');
+        Route::get('/get/list', [CustomerController::class, 'getList'])->name('admin.customer.get.list');
+        Route::post('/store', [CustomerController::class, 'store'])->name('admin.customer.store');
+        Route::get('/edit', [CustomerController::class, 'edit'])->name('admin.customer.edit');
+        Route::post('/update', [CustomerController::class, 'update'])->name('admin.customer.update');
+        Route::get('/delete', [CustomerController::class, 'delete'])->name('admin.customer.delete');
+    });
+    Route::group(['prefix' => '/order'], function () {
+        Route::get('/', [OrderController::class, 'index'])->name('admin.order.index');
+        Route::get('/get/list', [OrderController::class, 'getList'])->name('admin.order.get.list');
+        Route::post('/store', [OrderController::class, 'store'])->name('admin.order.store');
+        Route::get('/edit', [OrderController::class, 'edit'])->name('admin.order.edit');
+        Route::post('/update', [OrderController::class, 'update'])->name('admin.order.update');
+        Route::get('/delete', [OrderController::class, 'delete'])->name('admin.order.delete');
+    });
+    Route::group(['prefix' => '/rawmaterialsimporthistory'], function () {
+        Route::get('/', [RawmaterialsController::class, 'index'])->name('admin.rawmaterialsimporthistory.index');
+        Route::get('/get/list', [RawmaterialsController::class, 'getList'])->name('admin.rawmaterialsimporthistory.get.list');
+        Route::post('/store', [RawmaterialsController::class, 'store'])->name('admin.rawmaterialsimporthistory.store');
+        Route::get('/edit', [RawmaterialsController::class, 'edit'])->name('admin.rawmaterialsimporthistory.edit');
+        Route::post('/update', [RawmaterialsController::class, 'update'])->name('admin.rawmaterialsimporthistory.update');
+        Route::get('/delete', [RawmaterialsController::class, 'delete'])->name('admin.rawmaterialsimporthistory.delete');
+    });
+    Route::group(['prefix' => '/typeofrawmaterials'], function () {
+        Route::get('/', [TypeofRawmaterialsController::class, 'index'])->name('admin.typeofrawmaterials.index');
+        Route::get('/get/list', [TypeofRawmaterialsController::class, 'getList'])->name('admin.typeofrawmaterials.get.list');
+        Route::post('/store', [TypeofRawmaterialsController::class, 'store'])->name('admin.typeofrawmaterials.store');
+        Route::get('/edit', [TypeofRawmaterialsController::class, 'edit'])->name('admin.typeofrawmaterials.edit');
+        Route::post('/update', [TypeofRawmaterialsController::class, 'update'])->name('admin.typeofrawmaterials.update');
+        Route::get('/delete', [TypeofRawmaterialsController::class, 'delete'])->name('admin.typeofrawmaterials.delete');
+    });
+    Route::group(['prefix' => '/attendance'], function () {
+        Route::get('/', [AttendanceController::class, 'index'])->name('admin.attendance.index');
+        Route::get('/get-attendance-single-day', [AttendanceController::class, 'getSingleDayAttendance'])->name('admin.attendance.single.day');
+        Route::post('/post-attendance-single-day', [AttendanceController::class, 'postSingleDayAttendance'])->name('admin.attendance.single.day.submit');
     });
 });

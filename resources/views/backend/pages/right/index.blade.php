@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Right | '.Helper::getSettings('application_name') ?? 'Machine Tool Solution')
+@section('title', 'Right | '.Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
         <h4 class="mt-2">Right Management</h4>
@@ -31,109 +31,99 @@
         </div>
     </div>
     @include('backend.pages.right.modal')
-    @push('footer')
-        <script type="text/javascript">
-            function getRight(search = null){
-                var table = jQuery('#dataTable').DataTable({
-                    responsive: true,
-                    processing: true,
-                    serverSide: true,
-                    // searching:false,
-                    // paging:false,
-                    // bFilter:false,
-                    // bInfo:false,
-                    ajax: {
-                        url: "{{ url('admin/role/get/right/list') }}",
-                        type: 'GET',
-                        data:{
-                        },
-                    },
-                    aLengthMenu: [
-                        [25, 50, 100, 500, 5000, -1],
-                        [25, 50, 100, 500, 5000, "All"]
-                    ],
-                    iDisplayLength: 50,
-                    "order": [
-                        [ 0, 'desc' ]
-                    ],
-                    columns: [
-                        {
-                            data: 'module',
-                        },
-                        {
-                            data: 'name',
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false,
-                            "className": "text-center w-10"
-                        },
-                    ]
-                });
+@endsection
+@section('script')
+<script type="text/javascript">
+    function getRight(search = null){
+        var table = jQuery('#dataTable').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            // searching:false,
+            // paging:false,
+            // bFilter:false,
+            // bInfo:false,
+            ajax: {
+                url: "{{ url('admin/role/get/right/list') }}",
+                type: 'GET',
+                data:{
+                },
+            },
+            aLengthMenu: [
+                [25, 50, 100, 500, 5000, -1],
+                [25, 50, 100, 500, 5000, "All"]
+            ],
+            iDisplayLength: 50,
+            "order": [
+                [ 0, 'desc' ]
+            ],
+            columns: [
+                {
+                    data: 'module',
+                },
+                {
+                    data: 'name',
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false,
+                    "className": "text-center w-10"
+                },
+            ]
+        });
+    }
+
+    getRight();
+
+    $(document).ready(function() {
+        $(document).on('click', '.edit_btn', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('data-id');
+        $.ajax({
+            url: "{{  url('/admin/role/right/edit/') }}/"+id,
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $('#editModal .modal-content').html(data);
+                $('#editModal').modal('show');
             }
+        })
+    });
 
-            getRight();
-
-            $(document).ready(function() {
-                $(document).on('click', '.edit_btn', function(e) {
-                e.preventDefault();
-                let id = $(this).attr('data-id');
+    $(document).on('click', '.delete_btn', function(e) {
+        e.preventDefault();
+        let id = $(this).attr('data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{  url('/admin/role/right/edit/') }}/"+id,
+                    url: "{{  url('/admin/role/right/delete/') }}/"+id,
                     type: "GET",
-                    dataType: "html",
+                    dataType: "json",
                     success: function (data) {
-                        $('#editModal .modal-content').html(data);
-                        $('#editModal').modal('show');
+                        if (data.success) {
+                            toastr.success(response.msg);
+                        } else {
+                            toastr.error(response.msg);
+                        }
+                        $('#dataTable').DataTable().destroy();
+                        getRight();
                     }
                 })
-            });
-
-            $(document).on('click', '.delete_btn', function(e) {
-                e.preventDefault();
-                let id = $(this).attr('data-id');
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{  url('/admin/role/right/delete/') }}/"+id,
-                            type: "GET",
-                            dataType: "json",
-                            success: function (data) {
-                                if (data.success) {
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: data.success,
-                                        position: 'top-center',
-                                        icon: 'success'
-                                    })
-                                } else {
-                                    $.toast({
-                                        heading: 'Error',
-                                        text: data.error,
-                                        position: 'top-center',
-                                        icon: 'error'
-                                    })
-                                }
-                                $('#dataTable').DataTable().destroy();
-                                getRight();
-                            }
-                        })
-                        
-                    }
-                })
-            })
-            })
-            
-        </script>
-    @endpush
+                
+            }
+        })
+    })
+    })
+    
+</script>
 @endsection

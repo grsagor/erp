@@ -152,13 +152,18 @@
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse @if (Route::is('admin.typeofrawmaterials.index') ||
-                            Route::is('admin.order.index')) show @endif" id="rawMaterialsNav"
+                            Route::is('admin.rawmaterialsimporthistory.index')) show @endif" id="rawMaterialsNav"
                         aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav down">
                             @if (Helper::hasRight('typeofrawmaterials.view'))
                                 <a class="nav-link {{ Route::is('admin.typeofrawmaterials.index') ? 'active' : '' }}"
                                     href="{{ route('admin.typeofrawmaterials.index') }}"><i
                                         class="fa-solid fa-angles-right ikon"></i> Material Type Management </a>
+                            @endif
+                            @if (Helper::hasRight('typeofrawmaterials.view'))
+                                <a class="nav-link {{ Route::is('admin.rawmaterialsimporthistory.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.rawmaterialsimporthistory.index') }}"><i
+                                        class="fa-solid fa-angles-right ikon"></i> Material Management </a>
                             @endif
                         </nav>
                     </div>

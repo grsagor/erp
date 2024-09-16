@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,12 +18,12 @@ class EmployeeController extends Controller
 
     public function getList(Request $request){
 
-        $data = Employee::all();        
+        $data = User::where('role', 2)->get();   
        
         return DataTables::of($data)
 
         ->editColumn('image', function ($row) {
-            return ($row->image) ? '<img class="profile-img" src="'.asset($row->image).'" alt="profile image">' : '<img class="profile-img" src="'.asset('assets/utils/images/no-img.jpg').'" alt="profile image">';
+            return ($row->profile_image) ? '<img class="profile-img" src="'.asset($row->profile_image).'" alt="profile image">' : '<img class="profile-img" src="'.asset('assets/utils/images/no-img.jpg').'" alt="profile image">';
         })
         ->addColumn('action', function ($row) {
             $btn = '<div class="d-flex justify-content-center align-items-center gap-2">';
@@ -57,7 +56,7 @@ class EmployeeController extends Controller
 
         try {
             DB::beginTransaction();
-            $employee = new Employee();
+            $employee = new User();
 
             $employee->name = $request->name;
             $employee->email = $request->email;
@@ -65,12 +64,13 @@ class EmployeeController extends Controller
             $employee->department = $request->department;
             $employee->position = $request->position;
             $employee->salary = $request->salary;
+            $employee->role = 2;
     
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $filename = time() . uniqid() . $image->getClientOriginalName();
                 $image->move(public_path('uploads/employee-images'), $filename);
-                $employee->image = 'uploads/employee-images/' . $filename;
+                $employee->profile_image = 'uploads/employee-images/' . $filename;
             }
     
             $employee->save();
@@ -91,7 +91,7 @@ class EmployeeController extends Controller
     }
 
     public function edit(Request $request){
-        $employee = Employee::find($request->id);
+        $employee = User::find($request->id);
         return view('backend.pages.employee.edit', compact('employee'));
     }
 
@@ -113,7 +113,7 @@ class EmployeeController extends Controller
 
         try {
             DB::beginTransaction();
-            $employee = Employee::find($request->id);
+            $employee = User::find($request->id);
 
             $employee->name = $request->name;
             $employee->email = $request->email;
@@ -121,15 +121,16 @@ class EmployeeController extends Controller
             $employee->department = $request->department;
             $employee->position = $request->position;
             $employee->salary = $request->salary;
+            $employee->role = 2;
     
             if ($request->hasFile('image')) {
-                if ($employee->image != Null && file_exists(public_path($employee->image))) {
-                    unlink(public_path($employee->image));
+                if ($employee->profile_image != Null && file_exists(public_path($employee->profile_image))) {
+                    unlink(public_path($employee->profile_image));
                 }
                 $image = $request->file('image');
                 $filename = time() . uniqid() . $image->getClientOriginalName();
                 $image->move(public_path('uploads/employee-images'), $filename);
-                $employee->image = 'uploads/employee-images/' . $filename;
+                $employee->profile_image = 'uploads/employee-images/' . $filename;
             }
     
             $employee->save();
@@ -152,10 +153,10 @@ class EmployeeController extends Controller
     public function delete(Request $request){
         try {
             DB::beginTransaction();
-            $employee = Employee::find($request->id);
+            $employee = User::find($request->id);
             if ($employee) {
-                if ($employee->image != Null && file_exists(public_path($employee->image))) {
-                    unlink(public_path($employee->image));
+                if ($employee->profile_image != Null && file_exists(public_path($employee->profile_image))) {
+                    unlink(public_path($employee->profile_image));
                 }
                 $employee->delete();
                 $response = [

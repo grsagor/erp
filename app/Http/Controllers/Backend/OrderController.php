@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +15,7 @@ use Yajra\DataTables\DataTables;
 class OrderController extends Controller
 {
     public function index(){
-        $customers = Customer::all();
+        $customers = User::where('role', 3)->get();
         $data = [
             'customers' => $customers,
         ];
@@ -92,7 +93,7 @@ class OrderController extends Controller
 
     public function edit(Request $request){
         $order = Order::find($request->id);
-        $customers = Customer::all();
+        $customers = User::where('role', 3)->get();
         $data = [
             'customers' => $customers,
             'order' => $order,

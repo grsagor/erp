@@ -12,7 +12,7 @@
 
             </div>
         </div>
-        <input type="hidden" name="id" value="{{ $employee->id }}">
+        <input type="hidden" name="id" value="{{ $customer->id }}">
         <div class="form-group  row">
             <label for="" class="text-gray-700 fw-medium col-sm-2 col-form-label">Choose
                 Image</label>
@@ -21,7 +21,7 @@
                     <label class="w-100 h-100 overflow-hidden bg-blue-100 cursor-pointer"
                         for="edit_image">
                         <img class="w-100 h-100 object-fit-cover border preview_image"
-                            src="{{ $employee->image ? asset($employee->image) : asset('assets/utils/images/no-img.jpg') }}" alt="">
+                            src="{{ $customer->profile_image ? asset($customer->profile_image) : asset('assets/utils/images/no-img.jpg') }}" alt="">
                             <div
                             class="profile_picture_edit_icon--container bg-white position-absolute d-flex flex-column align-items-center justify-content-center rounded-circle shadow border">
                             <i class="fa-solid fa-pen text-primary text-12"></i>
@@ -35,19 +35,25 @@
         <div class="form-group  row">
             <label for="" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-10">
-                <input type="text" name="name" value="{{ $employee->name }}" class="form-control" placeholder="Name" required>
+                <input type="text" name="name" value="{{ $customer->name }}" class="form-control" placeholder="Name" required>
             </div>
         </div>
         <div class="form-group  row">
             <label for="" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-                <input type="text" name="email" value="{{ $employee->email }}" class="form-control" placeholder="Email" required>
+                <input type="text" name="email" value="{{ $customer->email }}" class="form-control" placeholder="Email" required>
             </div>
         </div>
         <div class="form-group  row">
             <label for="" class="col-sm-2 col-form-label">Phone No.</label>
             <div class="col-sm-10">
-                <input type="text" name="phone" value="{{ $employee->phone }}" class="form-control" placeholder="Phone No." required>
+                <input type="text" name="phone" value="{{ $customer->phone }}" class="form-control" placeholder="Phone No." required>
+            </div>
+        </div>
+        <div class="form-group  row">
+            <label for="" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="text" name="password" class="form-control" placeholder="Password" required>
             </div>
         </div>
     </div>

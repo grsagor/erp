@@ -5,9 +5,8 @@
             <form id="createForm" method="post">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Raw Materials</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        {{-- <i class="fa-solid fa-xmark"></i> --}}
                         <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
                     </button>
                 </div>
@@ -18,12 +17,12 @@
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="col-sm-3 col-form-label">Select Type</label>
+                        <label for="" class="col-sm-3 col-form-label">Select Customer</label>
                         <div class="col-sm-9">
-                            <select name="type_id" class="form-control" required>
+                            <select name="customer_id" class="form-control" required>
                                 <option value="">Select</option>
-                                @foreach ($types as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{$customer->id}}">{{$customer->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -35,15 +34,9 @@
                         </div>
                     </div>
                     <div class="form-group  row">
-                        <label for="" class="col-sm-3 col-form-label">Price</label>
+                        <label for="" class="col-sm-3 col-form-label">Delivery Date</label>
                         <div class="col-sm-9">
-                            <input type="number" name="price" class="form-control" placeholder="Price" required>
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label for="" class="col-sm-3 col-form-label">Date</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="date" class="form-control datepicker" placeholder="Date" required>
+                            <input type="text" name="delivery_date" class="form-control datepicker" placeholder="Delivery Date" required>
                         </div>
                     </div>
                 </div>

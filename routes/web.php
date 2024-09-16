@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\AttendanceController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EmployeeController;
+use App\Http\Controllers\Backend\ExampleController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\RawmaterialsController;
@@ -12,23 +13,15 @@ use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\TypeofRawmaterialsController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'check')->name('check');
+    Route::get('/user/add-order', 'userOrderPage')->name('user.add.order.index');
+    Route::get('/user/orders', 'userOrders')->name('user.orders.index');
+    Route::get('/user/orders/list', 'userOrdersList')->name('user.order.get.list');
 });
-
 Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'loginForm')->name('login.form');
     Route::post('login', 'login')->name('login');
@@ -120,5 +113,23 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/', [AttendanceController::class, 'index'])->name('admin.attendance.index');
         Route::get('/get-attendance-single-day', [AttendanceController::class, 'getSingleDayAttendance'])->name('admin.attendance.single.day');
         Route::post('/post-attendance-single-day', [AttendanceController::class, 'postSingleDayAttendance'])->name('admin.attendance.single.day.submit');
+    });
+
+    Route::group(['prefix' => '/example'], function () {
+        Route::get('/', [ExampleController::class, 'index'])->name('admin.example.index');
+        Route::get('/list', [ExampleController::class, 'getList'])->name('admin.example.list');
+        Route::post('/store', [ExampleController::class, 'store'])->name('admin.example.store');
+        Route::get('/edit', [ExampleController::class, 'edit'])->name('admin.example.edit');
+        Route::post('/update', [ExampleController::class, 'update'])->name('admin.example.update');
+        Route::post('/delete', [ExampleController::class, 'delete'])->name('admin.example.delete');
+    });
+    
+    Route::group(['prefix' => '/example'], function () {
+        Route::get('/', [ExampleController::class, 'index'])->name('admin.example.index');
+        Route::get('/list', [ExampleController::class, 'getList'])->name('admin.example.list');
+        Route::post('/store', [ExampleController::class, 'store'])->name('admin.example.store');
+        Route::get('/edit', [ExampleController::class, 'edit'])->name('admin.example.edit');
+        Route::post('/update', [ExampleController::class, 'update'])->name('admin.example.update');
+        Route::post('/delete', [ExampleController::class, 'delete'])->name('admin.example.delete');
     });
 });

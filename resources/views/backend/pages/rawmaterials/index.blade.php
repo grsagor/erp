@@ -2,13 +2,13 @@
 @section('title', 'Order | ' . Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Order Management</h4>
+        <h4 class="mt-2">Raw Materials Management</h4>
         <div class="card my-2">
             <div class="card-header">
                 <div class="row ">
                     <div class="col-12 d-flex justify-content-between">
                         <div class="d-flex align-items-center">
-                            <h5 class="m-0">Order List</h5>
+                            <h5 class="m-0">Raw Materials List</h5>
                         </div>
                         @if (Helper::hasRight('order.create'))
                             <button type="button" class="btn btn-primary btn-create-user create_form_btn"
@@ -23,10 +23,10 @@
                     <thead>
                         <tr>
                             <th>SI</th>
-                            <th>CustomerID</th>
-                            <th>Customer Name</th>
+                            <th>Type</th>
                             <th>Quantity</th>
-                            <th>Delivery Date</th>
+                            <th>Price</th>
+                            <th>Date</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-    @include('backend.pages.order.modal')
+    @include('backend.pages.rawmaterials.modal')
 @endsection
 
 @section('script')
@@ -49,7 +49,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('admin.order.get.list') }}",
+                    url: "{{ route('admin.rawmaterialsimporthistory.get.list') }}",
                     type: 'GET',
                     data: {
                         'name': name,
@@ -74,24 +74,24 @@
                         },
                     },
                     {
-                        data: 'customer_id',
-                        name: 'customer_id'
-                    },
-                    {
-                        data: 'customer_name',
-                        name: 'customer_name'
+                        data: 'type',
+                        name: 'type'
                     },
                     {
                         data: 'quantity',
                         name: 'quantity'
                     },
                     {
-                        data: 'delivery_date',
-                        name: 'delivery_date'
+                        data: 'price',
+                        name: 'price'
                     },
                     {
-                        data: 'status',
-                        name: 'status'
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'id',
+                        name: 'id'
                     },
                     {
                         data: 'action',
@@ -128,7 +128,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('admin.order.store') }}",
+                    url: "{{ route('admin.rawmaterialsimporthistory.store') }}",
                     type: "POST",
                     data: formData,
                     processData: false,
@@ -161,7 +161,7 @@
             e.preventDefault();
             let id = $(this).attr('data-id');
             $.ajax({
-                url: "{{ route('admin.order.edit') }}",
+                url: "{{ route('admin.rawmaterialsimporthistory.edit') }}",
                 type: "GET",
                 data: {
                     id: id
@@ -176,7 +176,7 @@
                         format: 'dd/mm/yyyy',
                         todayHighlight: true,
                         autoclose: true
-                    }).datepicker('setDate', new Date());
+                    }).datepicker();
                 }
             })
         });
@@ -194,7 +194,7 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    url: "{{ route('admin.order.update') }}",
+                    url: "{{ route('admin.rawmaterialsimporthistory.update') }}",
                     type: "POST",
                     data: formData,
                     processData: false,
@@ -237,7 +237,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ route('admin.order.delete') }}",
+                        url: "{{ route('admin.rawmaterialsimporthistory.delete') }}",
                         type: "GET",
                         data: {
                             id: id

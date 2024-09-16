@@ -5,13 +5,17 @@ namespace App\Http\Controllers\Backend;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\RawMaterial;
+use App\Models\TypeOfRawMaterial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class RawmaterialsController extends Controller
 {
     public function index(){
-        return view('backend.pages.typeofrawmaterials.index');
+        $types = TypeOfRawMaterial::all();
+        return view('backend.pages.rawmaterials.index', compact('types'));
     }
 
     public function getList(Request $request){
@@ -19,6 +23,9 @@ class RawmaterialsController extends Controller
         $data = RawMaterial::all();        
        
         return DataTables::of($data)
+        ->addColumn('type', function ($row) {
+            return $row->type->name;
+        })
         ->addColumn('action', function ($row) {
             $btn = '<div class="d-flex justify-content-center align-items-center gap-2">';
             if (Helper::hasRight('employee.edit')) {
@@ -29,12 +36,12 @@ class RawmaterialsController extends Controller
             }
             return $btn . '</div>';
         })
-        ->rawColumns(['status','action'])->make(true);
+        ->rawColumns(['action'])->make(true);
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'type_id' => 'required',
         ]);
         if ($validator->fails()) {
             $data['status'] = 0;
@@ -44,11 +51,14 @@ class RawmaterialsController extends Controller
 
         try {
             DB::beginTransaction();
-            $typeofrawmaterials = new TypeOfRawMaterial();
+            $rawmaterials = new RawMaterial();
 
-            $typeofrawmaterials->name = $request->name;
+            $rawmaterials->type_id = $request->type_id;
+            $rawmaterials->quantity = $request->quantity;
+            $rawmaterials->price = $request->price;
+            $rawmaterials->date = $request->date;
     
-            $typeofrawmaterials->save();
+            $rawmaterials->save();
             $response = [
                 'status' => 1,
                 'msg' => 'Material type created successfully.'
@@ -66,16 +76,18 @@ class RawmaterialsController extends Controller
     }
 
     public function edit(Request $request){
-        $typeofrawmaterial = RawMaterial::find($request->id);
+        $rawmaterial = RawMaterial::find($request->id);
+        $types = TypeOfRawMaterial::all();
         $data = [
-            'typeofrawmaterial' => $typeofrawmaterial,
+            'rawmaterial' => $rawmaterial,
+            'types' => $types,
         ];
-        return view('backend.pages.typeofrawmaterials.edit', $data);
+        return view('backend.pages.rawmaterials.edit', $data);
     }
 
     public function update(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'type_id' => 'required',
         ]);
         if ($validator->fails()) {
             $data['status'] = 0;
@@ -85,11 +97,14 @@ class RawmaterialsController extends Controller
 
         try {
             DB::beginTransaction();
-            $typeofrawmaterials = RawMaterial::find($request->id);
-
-            $typeofrawmaterials->name = $request->name;
+            $rawmaterials = RawMaterial::find($request->id);
+            
+            $rawmaterials->type_id = $request->type_id;
+            $rawmaterials->quantity = $request->quantity;
+            $rawmaterials->price = $request->price;
+            $rawmaterials->date = $request->date;
     
-            $typeofrawmaterials->save();
+            $rawmaterials->save();
             $response = [
                 'status' => 1,
                 'msg' => 'Material type updated successfully.'
@@ -109,9 +124,9 @@ class RawmaterialsController extends Controller
     public function delete(Request $request){
         try {
             DB::beginTransaction();
-            $typeofrawmaterials = RawMaterial::find($request->id);
-            if ($typeofrawmaterials) {
-                $typeofrawmaterials->delete();
+            $rawmaterials = RawMaterial::find($request->id);
+            if ($rawmaterials) {
+                $rawmaterials->delete();
                 $response = [
                     'status' => 1,
                     'msg' => 'Material type deleted successfully.'

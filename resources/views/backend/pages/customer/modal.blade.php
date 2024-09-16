@@ -54,6 +54,12 @@
                             <input type="text" name="phone" class="form-control" placeholder="Phone No." required>
                         </div>
                     </div>
+                    <div class="form-group  row">
+                        <label for="" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="password" class="form-control" placeholder="Password" required>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="modal__btn_space" data-bs-dismiss="modal">Close</a>

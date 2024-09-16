@@ -31,7 +31,14 @@ class AuthController extends Controller
         ];
 
         if (Auth::attempt($credentials)) {
-            return redirect(route('admin.index'));
+            $user = Auth::user();
+            if ($user->role == 1) {
+                return redirect(route('admin.index'));
+            } elseif ($user->role == 3) {
+                return redirect(route('user.order.index'));
+            } {
+
+            }
         } else {
             return redirect()->back()->withErrors(['error' => 'Invalid credentials.']);
         }

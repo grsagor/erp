@@ -7,6 +7,8 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\ExampleController;
 use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\ProductTypeController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\RawmaterialsController;
 use App\Http\Controllers\Backend\RoleController;
@@ -114,16 +116,22 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/get-attendance-single-day', [AttendanceController::class, 'getSingleDayAttendance'])->name('admin.attendance.single.day');
         Route::post('/post-attendance-single-day', [AttendanceController::class, 'postSingleDayAttendance'])->name('admin.attendance.single.day.submit');
     });
-
-    Route::group(['prefix' => '/example'], function () {
-        Route::get('/', [ExampleController::class, 'index'])->name('admin.example.index');
-        Route::get('/list', [ExampleController::class, 'getList'])->name('admin.example.list');
-        Route::post('/store', [ExampleController::class, 'store'])->name('admin.example.store');
-        Route::get('/edit', [ExampleController::class, 'edit'])->name('admin.example.edit');
-        Route::post('/update', [ExampleController::class, 'update'])->name('admin.example.update');
-        Route::post('/delete', [ExampleController::class, 'delete'])->name('admin.example.delete');
+    Route::group(['prefix' => '/products'], function () {
+        Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
+        Route::get('/get/list', [ProductController::class, 'getList'])->name('admin.products.get.list');
+        Route::post('/store', [ProductController::class, 'store'])->name('admin.products.store');
+        Route::get('/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+        Route::post('/update', [ProductController::class, 'update'])->name('admin.products.update');
+        Route::get('/delete', [ProductController::class, 'delete'])->name('admin.products.delete');
     });
-    
+    Route::group(['prefix' => '/producttype'], function () {
+        Route::get('/', [ProductTypeController::class, 'index'])->name('admin.producttype.index');
+        Route::get('/get/list', [ProductTypeController::class, 'getList'])->name('admin.producttype.get.list');
+        Route::post('/store', [ProductTypeController::class, 'store'])->name('admin.producttype.store');
+        Route::get('/edit', [ProductTypeController::class, 'edit'])->name('admin.producttype.edit');
+        Route::post('/update', [ProductTypeController::class, 'update'])->name('admin.producttype.update');
+        Route::get('/delete', [ProductTypeController::class, 'delete'])->name('admin.producttype.delete');
+    });
     Route::group(['prefix' => '/example'], function () {
         Route::get('/', [ExampleController::class, 'index'])->name('admin.example.index');
         Route::get('/list', [ExampleController::class, 'getList'])->name('admin.example.list');

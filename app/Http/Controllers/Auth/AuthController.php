@@ -35,7 +35,7 @@ class AuthController extends Controller
             if ($user->role == 1) {
                 return redirect(route('admin.index'));
             } elseif ($user->role == 3) {
-                return redirect(route('user.order.index'));
+                return redirect(route('user.orders.index'));
             } {
 
             }

@@ -87,12 +87,12 @@
 
                 @if (Helper::hasRight('hr.view'))
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#hrNav"
-                        aria-expanded="@if (Route::is('admin.employee.index') || Route::is('admin.attendance.index')) true @else false @endif"
+                        aria-expanded="@if (Route::is('admin.employee.index') || Route::is('admin.salary.index') || Route::is('admin.attendance.index')) true @else false @endif"
                         aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div> HR Management
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="collapse @if (Route::is('admin.employee.index') || Route::is('admin.attendance.index')) show @endif" id="hrNav"
+                    <div class="collapse @if (Route::is('admin.employee.index') || Route::is('admin.salary.index') || Route::is('admin.attendance.index')) show @endif" id="hrNav"
                         aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav down">
                             @if (Helper::hasRight('employee.view'))
@@ -104,6 +104,11 @@
                                 <a class="nav-link {{ Route::is('admin.attendance.index') ? 'active' : '' }}"
                                     href="{{ route('admin.attendance.index') }}"><i
                                         class="fa-solid fa-angles-right ikon"></i> Attendance Management </a>
+                            @endif
+                            @if (Helper::hasRight('attendance.view'))
+                                <a class="nav-link {{ Route::is('admin.salary.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.salary.index') }}"><i
+                                        class="fa-solid fa-angles-right ikon"></i> Salary Management </a>
                             @endif
                         </nav>
                     </div>

@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\ProductTypeController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\RawmaterialsController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\Salarycontroller;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\TypeofRawmaterialsController;
 use App\Http\Controllers\Backend\UserController;
@@ -133,6 +134,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/edit', [ProductTypeController::class, 'edit'])->name('admin.producttype.edit');
         Route::post('/update', [ProductTypeController::class, 'update'])->name('admin.producttype.update');
         Route::get('/delete', [ProductTypeController::class, 'delete'])->name('admin.producttype.delete');
+    });
+    Route::group(['prefix' => '/salary'], function () {
+        Route::get('/', [Salarycontroller::class, 'index'])->name('admin.salary.index');
+        Route::get('/get/list', [Salarycontroller::class, 'getList'])->name('admin.salary.get.list');
+        Route::post('/store', [Salarycontroller::class, 'store'])->name('admin.salary.store');
+        Route::get('/edit', [Salarycontroller::class, 'edit'])->name('admin.salary.edit');
+        Route::post('/update', [Salarycontroller::class, 'update'])->name('admin.salary.update');
+        Route::get('/delete', [Salarycontroller::class, 'delete'])->name('admin.salary.delete');
     });
     Route::group(['prefix' => '/example'], function () {
         Route::get('/', [ExampleController::class, 'index'])->name('admin.example.index');

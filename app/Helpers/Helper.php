@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Http\Controllers\Backend\ProductTypeController;
+use App\Models\Attendance;
 use App\Models\TypeOfRawMaterial;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -22,28 +23,49 @@ use App\Models\Company;
 use App\Models\MyFest;
 use App\Models\PartnerProduct;
 use App\Models\ProductType;
+use Carbon\Carbon;
 
 // use Auth;
 
 class Helper
 {
-    public static function rawMaterialsQuantityUpdate($id, $quantity, $action) {
+    public static function getWorkingHours($employeeId, $selectedMonth, $selectedYear)
+    {
+        $totalHours = Attendance::where('employee_id', $employeeId)
+            ->whereRaw('YEAR(STR_TO_DATE(`date`, "%d/%m/%Y")) = ?', [$selectedYear])
+            ->whereRaw('MONTH(STR_TO_DATE(`date`, "%d/%m/%Y")) = ?', [$selectedMonth])
+            ->get()
+            ->reduce(function ($carry, $attendance) {
+                // Assuming check_in and check_out are in "H:i" format (24-hour format)
+                $checkIn = Carbon::createFromFormat('H:i', $attendance->check_in);
+                $checkOut = Carbon::createFromFormat('H:i', $attendance->check_out);
+                // Calculate the difference in hours
+                $workingHours = $checkOut->diffInMinutes($checkIn) / 60; // Convert minutes to hours
+
+                return $carry + $workingHours;
+            }, 0);
+
+        return $totalHours;
+    }
+    public static function rawMaterialsQuantityUpdate($id, $quantity, $action)
+    {
         $material_type = TypeOfRawMaterial::find($id);
 
         if ($action == 'plus') {
             $material_type->quantity = $material_type->quantity + $quantity;
-        } elseif($action == 'minus') {
+        } elseif ($action == 'minus') {
             $material_type->quantity = $material_type->quantity - $quantity;
         }
 
         $material_type->save();
     }
-    public static function productsQuantityUpdate($id, $quantity, $action) {
+    public static function productsQuantityUpdate($id, $quantity, $action)
+    {
         $product = ProductType::find($id);
 
         if ($action == 'plus') {
             $product->quantity = $product->quantity + $quantity;
-        } elseif($action == 'minus') {
+        } elseif ($action == 'minus') {
             $product->quantity = $product->quantity - $quantity;
         }
 
@@ -665,14 +687,14 @@ class Helper
                 'body' => $body,
                 'style' => 'picture',
                 "image" => env("APP_URL") . '/uploads/news-images/' . $image,
-                "click_action" => 'news-details/'.$news_id
+                "click_action" => 'news-details/' . $news_id
             ],
             'data' => [
                 'title' => $title,
                 'body' => json_encode($body),
                 'status' => 'done',
                 "image" => env("APP_URL") . '/uploads/news-images/' . $image,
-                "click_action" => 'news-details/'.$news_id
+                "click_action" => 'news-details/' . $news_id
             ],
         ];
         $curl = curl_init();

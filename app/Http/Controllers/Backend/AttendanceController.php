@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,7 @@ class AttendanceController extends Controller
     }
     public function getSingleDayAttendance(Request $request) {
         $date = $request->date;
-        $employees = Employee::with(['attendances' => function($query) use ($date) {
+        $employees = User::where('role', 2)->with(['attendances' => function($query) use ($date) {
             $query->where('date', $date);
         }])->get();
         $html = view('backend.pages.attendance.single-day-attendance', compact('employees', 'date'))->render();

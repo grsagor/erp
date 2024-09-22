@@ -5,7 +5,7 @@
             <form id="createForm" method="post">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Order</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Type of Material</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         {{-- <i class="fa-solid fa-xmark"></i> --}}
                         <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>

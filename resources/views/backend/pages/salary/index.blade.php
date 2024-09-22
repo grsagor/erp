@@ -1,8 +1,8 @@
 @extends('backend.layout.app')
-@section('title', 'Order | ' . Helper::getSettings('application_name') ?? 'ERP')
+@section('title', 'Salary | ' . Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Order Management</h4>
+        <h4 class="mt-2">Salary Management</h4>
 
         <div class="card my-2">
             <div class="card-body pb-0">
@@ -11,26 +11,26 @@
                         <div class="col-md-6">
                             <select name="month" id="month" class="form-control" required>
                                 <option value="">Select Month</option>
-                                <option {{ $todayMonth == "1" ? 'selected' : ''}} value="01">January</option>
-                                <option {{ $todayMonth == "2" ? 'selected' : ''}} value="02">February</option>
-                                <option {{ $todayMonth == "3" ? 'selected' : ''}} value="03">March</option>
-                                <option {{ $todayMonth == "4" ? 'selected' : ''}} value="04">April</option>
-                                <option {{ $todayMonth == "5" ? 'selected' : ''}} value="05">May</option>
-                                <option {{ $todayMonth == "6" ? 'selected' : ''}} value="06">June</option>
-                                <option {{ $todayMonth == "7" ? 'selected' : ''}} value="07">July</option>
-                                <option {{ $todayMonth == "8" ? 'selected' : ''}} value="08">August</option>
-                                <option {{ $todayMonth == "9" ? 'selected' : ''}} value="09">September</option>
-                                <option {{ $todayMonth == "10" ? 'selected' : ''}} value="10">October</option>
-                                <option {{ $todayMonth == "11" ? 'selected' : ''}} value="11">November</option>
-                                <option {{ $todayMonth == "12" ? 'selected' : ''}} value="12">December</option>
-                            </select>                            
+                                <option {{ $todayMonth == '1' ? 'selected' : '' }} value="01">January</option>
+                                <option {{ $todayMonth == '2' ? 'selected' : '' }} value="02">February</option>
+                                <option {{ $todayMonth == '3' ? 'selected' : '' }} value="03">March</option>
+                                <option {{ $todayMonth == '4' ? 'selected' : '' }} value="04">April</option>
+                                <option {{ $todayMonth == '5' ? 'selected' : '' }} value="05">May</option>
+                                <option {{ $todayMonth == '6' ? 'selected' : '' }} value="06">June</option>
+                                <option {{ $todayMonth == '7' ? 'selected' : '' }} value="07">July</option>
+                                <option {{ $todayMonth == '8' ? 'selected' : '' }} value="08">August</option>
+                                <option {{ $todayMonth == '9' ? 'selected' : '' }} value="09">September</option>
+                                <option {{ $todayMonth == '10' ? 'selected' : '' }} value="10">October</option>
+                                <option {{ $todayMonth == '11' ? 'selected' : '' }} value="11">November</option>
+                                <option {{ $todayMonth == '12' ? 'selected' : '' }} value="12">December</option>
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <select name="year" id="year" class="form-control" required>
                                 <option value="">Select Year</option>
-                                <option {{ $todayYear == "2024" ? 'selected' : '' }} value="2024">2024</option>
-                                <option {{ $todayYear == "2023" ? 'selected' : '' }} value="2023">2023</option>
-                                <option {{ $todayYear == "2022" ? 'selected' : '' }} value="2022">2022</option>
+                                <option {{ $todayYear == '2024' ? 'selected' : '' }} value="2024">2024</option>
+                                <option {{ $todayYear == '2023' ? 'selected' : '' }} value="2023">2023</option>
+                                <option {{ $todayYear == '2022' ? 'selected' : '' }} value="2022">2022</option>
                             </select>
                         </div>
                         <div class="col-md-12">
@@ -58,7 +58,8 @@
                                 Add</button>
                         @endif --}}
                         @if (Helper::hasRight('order.create'))
-                            <button type="button" class="btn btn-primary" id="make-salary-sheet"><i class="fa-solid fa-plus"></i>
+                            <button type="button" class="btn btn-primary" id="make-salary-sheet"><i
+                                    class="fa-solid fa-plus"></i>
                                 Make Salary Sheet</button>
                         @endif
                     </div>
@@ -298,6 +299,28 @@
                         }
                     })
 
+                }
+            })
+        })
+        $(document).on('click', '#make-salary-sheet', function(e) {
+            e.preventDefault();
+            const month = $('#month').val();
+            const year = $('#year').val();
+            $.ajax({
+                url: "{{ route('admin.salary.make.sheet') }}",
+                type: "GET",
+                data: {
+                    month, year
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.status) {
+                        // toastr.success(response.msg);
+                        $('#dataTable').DataTable().destroy();
+                        initialDatatable();
+                    } else {
+                        toastr.error(response.msg);
+                    }
                 }
             })
         })

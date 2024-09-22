@@ -1,14 +1,14 @@
 @extends('backend.layout.app')
-@section('title', 'Order | ' . Helper::getSettings('application_name') ?? 'ERP')
+@section('title', 'Product Type | ' . Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Order Management</h4>
+        <h4 class="mt-2">Product Type Management</h4>
         <div class="card my-2">
             <div class="card-header">
                 <div class="row ">
                     <div class="col-12 d-flex justify-content-between">
                         <div class="d-flex align-items-center">
-                            <h5 class="m-0">Order List</h5>
+                            <h5 class="m-0">Product Type List</h5>
                         </div>
                         @if (Helper::hasRight('order.create'))
                             <button type="button" class="btn btn-primary btn-create-user create_form_btn"

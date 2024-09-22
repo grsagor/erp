@@ -1,5 +1,5 @@
 @extends('backend.layout.app')
-@section('title', 'Order | ' . Helper::getSettings('application_name') ?? 'ERP')
+@section('title', 'Products | ' . Helper::getSettings('application_name') ?? 'ERP')
 
 @section('css')
     <style>
@@ -16,13 +16,13 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Raw Materials Management</h4>
+        <h4 class="mt-2">Product Management</h4>
         <div class="card my-2">
             <div class="card-header">
                 <div class="row ">
                     <div class="col-12 d-flex justify-content-between">
                         <div class="d-flex align-items-center">
-                            <h5 class="m-0">Raw Materials List</h5>
+                            <h5 class="m-0">Product List</h5>
                         </div>
                         @if (Helper::hasRight('order.create'))
                             <button type="button" class="btn btn-primary btn-create-user create_form_btn"

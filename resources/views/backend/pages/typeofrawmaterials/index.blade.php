@@ -1,8 +1,8 @@
 @extends('backend.layout.app')
-@section('title', 'Order | ' . Helper::getSettings('application_name') ?? 'ERP')
+@section('title', 'Type of Material | ' . Helper::getSettings('application_name') ?? 'ERP')
 @section('content')
     <div class="container-fluid px-4">
-        <h4 class="mt-2">Order Management</h4>
+        <h4 class="mt-2">Type of Material Management</h4>
         <div class="card my-2">
             <div class="card-header">
                 <div class="row ">

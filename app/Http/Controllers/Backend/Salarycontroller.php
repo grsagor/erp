@@ -45,9 +45,6 @@ class Salarycontroller extends Controller
                 if (Helper::hasRight('employee.edit')) {
                     $btn = $btn . '<a href="" data-id="' . $row->id . '" class="edit_btn btn btn-sm btn-primary "><i class="fa-solid fa-pencil"></i></a>';
                 }
-                if (Helper::hasRight('employee.delete')) {
-                    $btn = $btn . '<a class="delete_btn btn btn-sm btn-danger " data-id="' . $row->id . '" href=""><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                }
                 return $btn . '</div>';
             })
             ->rawColumns(['status', 'action'])->make(true);
@@ -57,30 +54,39 @@ class Salarycontroller extends Controller
         try {
             DB::beginTransaction();
             $employees = User::where([['role', 2]])->get();
-            $todayMonth = $request->month ? $request->month : Carbon::now()->month;
-            $todayYear = $request->year ? $request->year : Carbon::now()->year;
+            $todayMonth = $request->month ? intval($request->month) : Carbon::now()->month;
+            $todayYear = $request->year ? intval($request->year) : Carbon::now()->year;
             foreach ($employees as $employee) {
                 $working_hours = Helper::getWorkingHours($employee->id, $todayMonth, $todayYear);
-                $total_salary = $employee->salary * $employee->working_hours;
-                $employee->total_salary = $employee->salary * $employee->working_hours;
+                $total_salary = $employee->salary * $working_hours;
     
                 $salary = Salary::where([['employee_id', $employee->id], ['month', $todayMonth], ['year', $todayYear]])->first();
                 if (!$salary) {
                     $salary = new Salary();
+                    $salary->paid = $request->paid ? $request->paid : 0;
                 }
                 $salary->employee_id = $employee->id;
                 $salary->month = $todayMonth;
                 $salary->year = $todayYear;
                 $salary->total_hour = $working_hours;
                 $salary->total_salary = $total_salary;
-                $salary->paid = $request->paid ? $request->paid : 0;
-                $salary->due = $request->paid ? ($total_salary - $request->paid) : $total_salary;
+                $salary->due = $total_salary - $salary->paid;
     
                 $salary->save();
             }
             DB::commit();
+
+            $response = [
+                'status' => 1,
+            ];
+            return response()->json($response);
         } catch (\Throwable $th) {
             DB::rollBack();
+            $response = [
+                'status' => 0,
+                'msg' => $th->getMessage()
+            ];
+            return response()->json($response);
         }
     }
 
@@ -120,17 +126,17 @@ class Salarycontroller extends Controller
 
     public function edit(Request $request)
     {
-        $product_type = ProductType::find($request->id);
+        $salary = Salary::find($request->id);
         $data = [
-            'product_type' => $product_type,
+            'salary' => $salary,
         ];
-        return view('backend.pages.producttype.edit', $data);
+        return view('backend.pages.salary.edit', $data);
     }
 
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            // 'name' => 'required',
         ]);
         if ($validator->fails()) {
             $data['status'] = 0;
@@ -140,14 +146,15 @@ class Salarycontroller extends Controller
 
         try {
             DB::beginTransaction();
-            $product_type = ProductType::find($request->id);
+            $salary = Salary::find($request->id);
 
-            $product_type->name = $request->name;
+            $salary->paid = $request->paid;
+            $salary->due = $salary->total_salary - $request->paid;
 
-            $product_type->save();
+            $salary->save();
             $response = [
                 'status' => 1,
-                'msg' => 'Material type updated successfully.'
+                'msg' => 'Salary updated successfully.'
             ];
             DB::commit();
             return response()->json($response);

@@ -1,7 +1,7 @@
 <form id="editForm" method="post">
     @csrf 
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Type of Material</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
         </button>

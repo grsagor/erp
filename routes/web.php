@@ -142,6 +142,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/edit', [Salarycontroller::class, 'edit'])->name('admin.salary.edit');
         Route::post('/update', [Salarycontroller::class, 'update'])->name('admin.salary.update');
         Route::get('/delete', [Salarycontroller::class, 'delete'])->name('admin.salary.delete');
+        Route::get('/make-sheet', [Salarycontroller::class, 'makeSalary'])->name('admin.salary.make.sheet');
     });
     Route::group(['prefix' => '/example'], function () {
         Route::get('/', [ExampleController::class, 'index'])->name('admin.example.index');

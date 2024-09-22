@@ -25,6 +25,17 @@
             </div>
         </div>
         <div class="form-group  row">
+            <label for="" class="col-sm-3 col-form-label">Select Product</label>
+            <div class="col-sm-9">
+                <select name="product_type_id" class="form-control" required>
+                    <option value="">Select</option>
+                    @foreach ($product_types as $product_type)
+                        <option {{ $order->product_type_id == $product_type->id ? 'selected' : '' }} value="{{$product_type->id}}">{{$product_type->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group  row">
             <label for="" class="col-sm-3 col-form-label">Quantity</label>
             <div class="col-sm-9">
                 <input type="text" name="quantity" class="form-control" value="{{$order->quantity}}" placeholder="Quantity" required>

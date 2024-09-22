@@ -1,5 +1,19 @@
 @extends('backend.layout.app')
 @section('title', 'Order | ' . Helper::getSettings('application_name') ?? 'ERP')
+
+@section('css')
+    <style>
+        .product-material-table {
+            width: 100%;
+        }
+
+        .product-mateial-add-btn,
+        .product-mateial-delete-btn {
+            width: 70px;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container-fluid px-4">
         <h4 class="mt-2">Raw Materials Management</h4>
@@ -251,6 +265,30 @@
 
                 }
             })
+        })
+
+        $(document).on('click', '.product-mateial-add-btn button', function(e) {
+            e.preventDefault();
+            let container = $(this).attr('data-container');
+
+            $.ajax({
+                url: "{{ route('admin.products.add.material.row') }}",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    $(container).append(response.html);
+                }
+            })
+        })
+
+        $(document).on('click', '.product-mateial-delete-btn button', function(e) {
+            e.preventDefault();
+            let container = $(this).attr('data-container');
+            let no = $(this).attr('data-no');
+
+            console.log(container + ' product-material-table-tr-' + no)
+            
+            $(container + ' .product-material-table-tr-' + no).remove();
         })
 
         $(document).ready(function() {

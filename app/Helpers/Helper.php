@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use App\Http\Controllers\Backend\ProductTypeController;
+use App\Models\TypeOfRawMaterial;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
@@ -19,10 +21,34 @@ use App\Models\Translation;
 use App\Models\Company;
 use App\Models\MyFest;
 use App\Models\PartnerProduct;
+use App\Models\ProductType;
+
 // use Auth;
 
 class Helper
 {
+    public static function rawMaterialsQuantityUpdate($id, $quantity, $action) {
+        $material_type = TypeOfRawMaterial::find($id);
+
+        if ($action == 'plus') {
+            $material_type->quantity = $material_type->quantity + $quantity;
+        } elseif($action == 'minus') {
+            $material_type->quantity = $material_type->quantity - $quantity;
+        }
+
+        $material_type->save();
+    }
+    public static function productsQuantityUpdate($id, $quantity, $action) {
+        $product = ProductType::find($id);
+
+        if ($action == 'plus') {
+            $product->quantity = $product->quantity + $quantity;
+        } elseif($action == 'minus') {
+            $product->quantity = $product->quantity - $quantity;
+        }
+
+        $product->save();
+    }
 
     public static function hasRight($right, $role_id = null)
     {

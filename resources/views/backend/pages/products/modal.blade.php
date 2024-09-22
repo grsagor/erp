@@ -23,7 +23,7 @@
                             <select name="product_type_id" class="form-control" required>
                                 <option value="">Select</option>
                                 @foreach ($types as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -37,8 +37,38 @@
                     <div class="form-group  row">
                         <label for="" class="col-sm-3 col-form-label">Date</label>
                         <div class="col-sm-9">
-                            <input type="text" name="date" class="form-control datepicker" placeholder="Date" required>
+                            <input type="text" name="date" class="form-control datepicker" placeholder="Date"
+                                required>
                         </div>
+                    </div>
+                    <div>
+                        <table class="product-material-table" id="product-material-add-table">
+                            <thead>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Quantity</th>
+                                    <th class="product-mateial-add-btn"><button type="button" data-container="#product-material-add-table tbody">Add</button></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="product-material-table-tr-1">
+                                    <td>
+                                        <select name="material_id[]" class="form-control" required>
+                                            <option value="">Select</option>
+                                            @foreach ($material_types as $type)
+                                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="material_quantity[]" class="form-control"
+                                            placeholder="Quantity" required>
+                                    </td>
+                                    <td class="product-mateial-delete-btn"><button type="button"
+                                            data-no="1" data-container="#product-material-add-table tbody">Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">

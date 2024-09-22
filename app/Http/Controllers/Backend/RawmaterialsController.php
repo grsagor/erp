@@ -59,6 +59,9 @@ class RawmaterialsController extends Controller
             $rawmaterials->date = $request->date;
     
             $rawmaterials->save();
+
+            Helper::rawMaterialsQuantityUpdate($request->type_id, $request->quantity, 'plus');
+            
             $response = [
                 'status' => 1,
                 'msg' => 'Material type created successfully.'

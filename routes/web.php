@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'check')->name('check');
     Route::get('/user/add-order', 'userOrderPage')->name('user.add.order.index');
+    Route::post('/user/add-order', 'userOrderPost')->name('user.add.order.post');
     Route::get('/user/orders', 'userOrders')->name('user.orders.index');
     Route::get('/user/orders/list', 'userOrdersList')->name('user.order.get.list');
 });
@@ -123,6 +124,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkAdmin'], function () {
         Route::get('/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
         Route::post('/update', [ProductController::class, 'update'])->name('admin.products.update');
         Route::get('/delete', [ProductController::class, 'delete'])->name('admin.products.delete');
+        Route::get('/add-material-row', [ProductController::class, 'addMaterialRow'])->name('admin.products.add.material.row');
     });
     Route::group(['prefix' => '/producttype'], function () {
         Route::get('/', [ProductTypeController::class, 'index'])->name('admin.producttype.index');

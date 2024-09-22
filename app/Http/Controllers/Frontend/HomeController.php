@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,20 @@ class HomeController extends Controller
 
     public function userOrderPage()
     {
-        return view('frontend.order.add');
+        $product_types = ProductType::all();
+        return view('frontend.order.add', compact('product_types'));
+    }
+    public function userOrderPost(Request $request) {
+        $order = new Order();
+
+        $order->customer_id = Auth::user()->id;
+        $order->product_type_id = $request->product_type_id;
+        $order->quantity = $request->quantity;
+        $order->delivery_date = $request->delivery_date;
+        $order->status = 1;
+
+        $order->save();
+        return redirect(route('user.orders.index'));
     }
     public function userOrders()
     {
@@ -85,6 +99,7 @@ class HomeController extends Controller
             DB::beginTransaction();
             $order = Order::find($request->id);
 
+            $order->product_type_id = $request->product_type_id;
             $order->quantity = $request->quantity;
             $order->delivery_date = $request->delivery_date;
     

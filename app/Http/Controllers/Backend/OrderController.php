@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\ProductType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,10 @@ class OrderController extends Controller
 {
     public function index(){
         $customers = User::where('role', 3)->get();
+        $product_types = ProductType::all();
         $data = [
             'customers' => $customers,
+            'product_types' => $product_types,
         ];
         return view('backend.pages.order.index', $data);
     }
@@ -70,6 +73,7 @@ class OrderController extends Controller
             $order = new Order();
 
             $order->customer_id = $request->customer_id;
+            $order->product_type_id = $request->product_type_id;
             $order->quantity = $request->quantity;
             $order->delivery_date = $request->delivery_date;
             $order->status = 1;
@@ -94,9 +98,11 @@ class OrderController extends Controller
     public function edit(Request $request){
         $order = Order::find($request->id);
         $customers = User::where('role', 3)->get();
+        $product_types = ProductType::all();
         $data = [
             'customers' => $customers,
             'order' => $order,
+            'product_types' => $product_types,
         ];
         return view('backend.pages.order.edit', $data);
     }
@@ -118,6 +124,7 @@ class OrderController extends Controller
             $order = Order::find($request->id);
 
             $order->customer_id = $request->customer_id;
+            $order->product_type_id = $request->product_type_id;
             $order->quantity = $request->quantity;
             $order->delivery_date = $request->delivery_date;
             $order->status = $request->status;

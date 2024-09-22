@@ -4,12 +4,23 @@
         <div>
             <h1 class="text-center">User Order</h1>
         </div>
-        <form id="createForm" method="post">
+        <form id="createForm" method="post" action="{{ route('user.add.order.post') }}" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
                 <div class="col-sm-12">
                     <div class="server_side_error" role="alert">
 
+                    </div>
+                </div>
+                <div class="form-group  row">
+                    <label for="" class="col-sm-3 col-form-label">Select Product</label>
+                    <div class="col-sm-9">
+                        <select name="product_type_id" class="form-control" required>
+                            <option value="">Select</option>
+                            @foreach ($product_types as $product_type)
+                                <option value="{{$product_type->id}}">{{$product_type->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="form-group  row">

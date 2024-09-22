@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Backend;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductMaterial;
 use App\Models\ProductType;
+use App\Models\TypeOfRawMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +17,8 @@ class ProductController extends Controller
 {
     public function index(){
         $types = ProductType::all();
-        return view('backend.pages.products.index', compact('types'));
+        $material_types = TypeOfRawMaterial::all();
+        return view('backend.pages.products.index', compact('types', 'material_types'));
     }
 
     public function getList(Request $request){
@@ -51,13 +54,26 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
-            $products = new Product();
+            $product = new Product();
 
-            $products->product_type_id = $request->product_type_id;
-            $products->quantity = $request->quantity;
-            $products->date = $request->date;
+            $product->product_type_id = $request->product_type_id;
+            $product->quantity = $request->quantity;
+            $product->date = $request->date;
     
-            $products->save();
+            $product->save();
+
+            Helper::productsQuantityUpdate($request->product_type_id, $request->quantity, 'plus');
+
+            foreach ($request->material_id as $index => $id) {
+                $p_material = new ProductMaterial();
+                $p_material->product_id = $product->id;
+                $p_material->material_id = $id;
+                $p_material->quantity = $request->material_quantity[$index];
+                $p_material->save();
+
+                Helper::rawMaterialsQuantityUpdate($id, $request->material_quantity[$index], 'minus');
+            }
+
             $response = [
                 'status' => 1,
                 'msg' => 'Material type created successfully.'
@@ -77,9 +93,13 @@ class ProductController extends Controller
     public function edit(Request $request){
         $product = Product::find($request->id);
         $types = ProductType::all();
+        $material_types = TypeOfRawMaterial::all();
+        $p_materials = ProductMaterial::where('product_id', $request->id)->with(['material_type'])->get();
         $data = [
             'product' => $product,
             'types' => $types,
+            'material_types' => $material_types,
+            'p_materials' => $p_materials,
         ];
         return view('backend.pages.products.edit', $data);
     }
@@ -96,13 +116,24 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
-            $products = Product::find($request->id);
+            $product = Product::find($request->id);
             
-            $products->product_type_id = $request->product_type_id;
-            $products->quantity = $request->quantity;
-            $products->date = $request->date;
+            $product->product_type_id = $request->product_type_id;
+            $product->quantity = $request->quantity;
+            $product->date = $request->date;
     
-            $products->save();
+            $product->save();
+
+            ProductMaterial::where('product_id', $product->id)->delete();
+
+            foreach ($request->material_id as $index => $id) {
+                $p_material = new ProductMaterial();
+                $p_material->product_id = $product->id;
+                $p_material->material_id = $id;
+                $p_material->quantity = $request->material_quantity[$index];
+                $p_material->save();
+            }
+
             $response = [
                 'status' => 1,
                 'msg' => 'Material type updated successfully.'
@@ -145,5 +176,15 @@ class ProductController extends Controller
             ];
             return response()->json($response);
         }
+    }
+
+    public function addMaterialRow() {
+        $material_types = TypeOfRawMaterial::all();
+        $time = time();
+        $html = view('backend.pages.products.add_material', compact('material_types', 'time'))->render();
+        $response = [
+            'html' => $html
+        ];
+        return response()->json($response);
     }
 }

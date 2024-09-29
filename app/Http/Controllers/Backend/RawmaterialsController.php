@@ -101,6 +101,8 @@ class RawmaterialsController extends Controller
         try {
             DB::beginTransaction();
             $rawmaterials = RawMaterial::find($request->id);
+
+            Helper::rawMaterialsQuantityUpdate($rawmaterials->type_id, ($request->quantity - $rawmaterials->quantity), 'plus');
             
             $rawmaterials->type_id = $request->type_id;
             $rawmaterials->quantity = $request->quantity;
@@ -129,6 +131,7 @@ class RawmaterialsController extends Controller
             DB::beginTransaction();
             $rawmaterials = RawMaterial::find($request->id);
             if ($rawmaterials) {
+                Helper::rawMaterialsQuantityUpdate($rawmaterials->type_id, $rawmaterials->quantity, 'minus');
                 $rawmaterials->delete();
                 $response = [
                     'status' => 1,

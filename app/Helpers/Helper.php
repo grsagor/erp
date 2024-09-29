@@ -71,7 +71,9 @@ class Helper
 
         $product->save();
     }
+    public static function makeTransaction($amount, $action) {
 
+    }
     public static function hasRight($right, $role_id = null)
     {
         if ($role_id != null) {

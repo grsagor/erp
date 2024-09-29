@@ -24,6 +24,7 @@
                         <tr>
                             <th>SI</th>
                             <th>Name</th>
+                            <th>Unit Price</th>
                             <th>Quantity</th>
                             <th>Action</th>
                         </tr>
@@ -73,6 +74,10 @@
                     {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'unit_price',
+                        name: 'unit_price'
                     },
                     {
                         data: 'quantity',

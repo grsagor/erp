@@ -90,40 +90,6 @@ class Salarycontroller extends Controller
         }
     }
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $data['status'] = 0;
-            $data['errors'] = $validator->errors();
-            return response()->json($data, 422);
-        }
-
-        try {
-            DB::beginTransaction();
-            $product_type = new ProductType();
-
-            $product_type->name = $request->name;
-
-            $product_type->save();
-            $response = [
-                'status' => 1,
-                'msg' => 'Material type created successfully.'
-            ];
-            DB::commit();
-            return response()->json($response);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $response = [
-                'status' => 0,
-                'msg' => $e->getMessage()
-            ];
-            return response()->json($response);
-        }
-    }
-
     public function edit(Request $request)
     {
         $salary = Salary::find($request->id);
@@ -148,8 +114,18 @@ class Salarycontroller extends Controller
             DB::beginTransaction();
             $salary = Salary::find($request->id);
 
+            $transaction_amount = $request->paid - $salary->paid;
+
             $salary->paid = $request->paid;
             $salary->due = $salary->total_salary - $request->paid;
+
+            $metadata = [
+                'order_id' => '',
+                'employee_id' => $salary->employee_id,
+                'raw_material_id' => '',
+                'reason' => 'salary',
+            ];
+            Helper::currentAmountUpdate($transaction_amount, 0, $metadata);
 
             $salary->save();
             $response = [

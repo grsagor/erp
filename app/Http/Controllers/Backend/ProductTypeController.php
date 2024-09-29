@@ -49,6 +49,7 @@ class ProductTypeController extends Controller
             $product_type = new ProductType();
 
             $product_type->name = $request->name;
+            $product_type->unit_price = $request->unit_price;
     
             $product_type->save();
             $response = [
@@ -90,6 +91,7 @@ class ProductTypeController extends Controller
             $product_type = ProductType::find($request->id);
 
             $product_type->name = $request->name;
+            $product_type->unit_price = $request->unit_price;
     
             $product_type->save();
             $response = [

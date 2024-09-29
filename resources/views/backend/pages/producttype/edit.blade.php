@@ -19,6 +19,12 @@
                 <input type="text" name="name" value="{{ $product_type->name }}" class="form-control" placeholder="Name" required>
             </div>
         </div>
+        <div class="form-group  row">
+            <label for="" class="col-sm-3 col-form-label">Unit Price</label>
+            <div class="col-sm-9">
+                <input type="text" name="unit_price" value="{{ $product_type->unit_price }}" class="form-control" placeholder="Unit Price" required>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <a type="button" class="modal__btn_space" data-bs-dismiss="modal">Close</a>

@@ -60,6 +60,14 @@ class RawmaterialsController extends Controller
     
             $rawmaterials->save();
 
+            $metadata = [
+                'order_id' => '',
+                'employee_id' => '',
+                'raw_material_id' => $rawmaterials->id,
+                'reason' => 'raw_material',
+            ];
+            Helper::currentAmountUpdate($request->price, 0, $metadata);
+
             Helper::rawMaterialsQuantityUpdate($request->type_id, $request->quantity, 'plus');
             
             $response = [
@@ -102,6 +110,8 @@ class RawmaterialsController extends Controller
             DB::beginTransaction();
             $rawmaterials = RawMaterial::find($request->id);
 
+            $transaction_amount = $request->price - $rawmaterials->price;
+
             Helper::rawMaterialsQuantityUpdate($rawmaterials->type_id, ($request->quantity - $rawmaterials->quantity), 'plus');
             
             $rawmaterials->type_id = $request->type_id;
@@ -110,6 +120,15 @@ class RawmaterialsController extends Controller
             $rawmaterials->date = $request->date;
     
             $rawmaterials->save();
+
+            $metadata = [
+                'order_id' => '',
+                'employee_id' => '',
+                'raw_material_id' => $rawmaterials->id,
+                'reason' => 'raw_material',
+            ];
+            Helper::currentAmountUpdate($transaction_amount, 0, $metadata);
+
             $response = [
                 'status' => 1,
                 'msg' => 'Material type updated successfully.'

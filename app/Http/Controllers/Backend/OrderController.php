@@ -71,10 +71,12 @@ class OrderController extends Controller
         try {
             DB::beginTransaction();
             $order = new Order();
+            $product_type = ProductType::find($request->product_type_id);
 
             $order->customer_id = $request->customer_id;
             $order->product_type_id = $request->product_type_id;
             $order->quantity = $request->quantity;
+            $order->price = $request->quantity * $product_type->unit_price;
             $order->delivery_date = $request->delivery_date;
             $order->status = 1;
     
@@ -122,14 +124,31 @@ class OrderController extends Controller
         try {
             DB::beginTransaction();
             $order = Order::find($request->id);
+            $product_type = ProductType::find($request->product_type_id);
+
+            $prev_status = $order->status;
+            $current_status = $request->status;
 
             $order->customer_id = $request->customer_id;
             $order->product_type_id = $request->product_type_id;
             $order->quantity = $request->quantity;
+            $order->price = $request->quantity * $product_type->unit_price;
             $order->delivery_date = $request->delivery_date;
             $order->status = $request->status;
     
             $order->save();
+
+            if ($prev_status != 3 && $current_status == 3) {
+                $metadata = [
+                    'order_id' => $order->id,
+                    'employee_id' => '',
+                    'raw_material_id' => '',
+                    'reason' => 'order_completed',
+                ];
+                Helper::currentAmountUpdate($order->price, 1, $metadata);
+                
+            }
+
             $response = [
                 'status' => 1,
                 'msg' => 'Order updated successfully.'

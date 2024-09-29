@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Http\Controllers\Backend\ProductTypeController;
 use App\Models\Attendance;
+use App\Models\Transaction;
 use App\Models\TypeOfRawMaterial;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -71,8 +72,23 @@ class Helper
 
         $product->save();
     }
-    public static function makeTransaction($amount, $action) {
+    public static function currentAmountUpdate($amount, $status, $metadata) {
+        $current_amount_setting = Setting::where('key', 'current_amount')->first();
+        if ($status == 1) {
+            $current_amount_setting->value = $current_amount_setting->value + $amount;
+        } elseif ($status == 0) {
+            $current_amount_setting->value = $current_amount_setting->value - $amount;
+        }
+        $current_amount_setting->save();
 
+        $transaction = new Transaction();
+        $transaction->amount = $amount;
+        $transaction->order_id = $metadata['order_id'] ? $metadata['order_id'] : '';
+        $transaction->employee_id = $metadata['employee_id'] ? $metadata['employee_id'] : '';
+        $transaction->raw_material_id = $metadata['raw_material_id'] ? $metadata['raw_material_id'] : '';
+        $transaction->reason = $metadata['reason'] ? $metadata['reason'] : '';
+        $transaction->status = $status;
+        $transaction->save();
     }
     public static function hasRight($right, $role_id = null)
     {

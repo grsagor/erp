@@ -84,10 +84,13 @@ class DashboardController extends Controller
             ->groupBy('employee_id')
             ->map(function ($salaries) {
                 return [
+                    'employee_name' => $salaries->first()->employee->name,
                     'total_paid' => $salaries->sum('paid'),  // Total paid salary
                     'total_due'  => $salaries->sum('due')    // Total due salary
                 ];
             });
+
+            // return $salaryData;
 
         $data = [
             'attendanceData' => $attendanceData,

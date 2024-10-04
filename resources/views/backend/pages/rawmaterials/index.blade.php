@@ -27,7 +27,7 @@
                             <th>Quantity</th>
                             <th>Price</th>
                             <th>Date</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -89,10 +89,10 @@
                         data: 'date',
                         name: 'date'
                     },
-                    {
-                        data: 'id',
-                        name: 'id'
-                    },
+                    // {
+                    //     data: 'id',
+                    //     name: 'id'
+                    // },
                     {
                         data: 'action',
                         name: 'action',

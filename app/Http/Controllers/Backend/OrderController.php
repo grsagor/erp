@@ -146,7 +146,6 @@ class OrderController extends Controller
                     'reason' => 'order_completed',
                 ];
                 Helper::currentAmountUpdate($order->price, 1, $metadata);
-                
             }
 
             $response = [

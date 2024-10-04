@@ -103,9 +103,11 @@
     </script>
 
     <script>
-        const salaryLabels = {!! json_encode($salaryData->pluck('employee_id')) !!};
+        const salaryLabels = {!! json_encode($salaryData->pluck('employee_name')) !!};
         const salaryPaid = {!! json_encode($salaryData->pluck('total_paid')) !!};
         const salaryDue = {!! json_encode($salaryData->pluck('total_due')) !!};
+
+        console.log("salaryDue", salaryDue);
 
         const ctxSalary = document.getElementById('salaryChart').getContext('2d');
         new Chart(ctxSalary, {

@@ -45,6 +45,7 @@
 
     <script>
         const orderStatusData = {!! json_encode($orderStatusData) !!};
+        console.log(orderStatusData)
         const ctxOrderStatus = document.getElementById('orderStatusChart').getContext('2d');
         new Chart(ctxOrderStatus, {
             type: 'pie',

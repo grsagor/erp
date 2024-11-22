@@ -49,11 +49,18 @@ class DashboardController extends Controller
                 });
             });
 
+        $orderStatusMapping = [
+            1 => 'Pending',
+            2 => 'In progress',
+            3 => 'Complete',
+        ];
+
         $orderStatusData = Order::with('customer')
             ->get()
             ->groupBy('status')
-            ->map(function ($orders) {
-                return $orders->count(); // Count orders by status
+            ->mapWithKeys(function ($orders, $status) use ($orderStatusMapping) {
+                $statusName = $orderStatusMapping[$status] ?? 'unknown'; // Map status to name
+                return [$statusName => $orders->count()]; // Return named status with count
             });
 
         // Controller Logic using Eloquent relationships
@@ -90,7 +97,7 @@ class DashboardController extends Controller
                 ];
             });
 
-            // return $salaryData;
+        // return $salaryData;
 
         $data = [
             'attendanceData' => $attendanceData,

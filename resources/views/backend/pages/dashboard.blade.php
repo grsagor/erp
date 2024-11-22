@@ -45,14 +45,13 @@
 
     <script>
         const orderStatusData = {!! json_encode($orderStatusData) !!};
-        console.log(orderStatusData)
         const ctxOrderStatus = document.getElementById('orderStatusChart').getContext('2d');
         new Chart(ctxOrderStatus, {
             type: 'pie',
             data: {
                 labels: Object.keys(orderStatusData),
                 datasets: [{
-                    label: 'Order Status Breakdown',
+                    label: 'Order Status',
                     data: Object.values(orderStatusData),
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',

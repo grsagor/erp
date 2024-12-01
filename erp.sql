@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 04, 2024 at 06:48 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.1.17
+-- Generation Time: Nov 22, 2024 at 05:42 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `erp`
+-- Database: `erp1`
 --
 
 -- --------------------------------------------------------
@@ -46,7 +46,10 @@ INSERT INTO `attendances` (`id`, `employee_id`, `date`, `check_in`, `check_out`,
 (9, '5', '22/09/2024', '07:34', '18:34', NULL, '2024-09-22 06:34:04', '2024-09-22 06:34:19'),
 (10, '5', '23/09/2024', '06:05', '18:05', NULL, '2024-09-22 12:05:46', '2024-09-22 12:05:46'),
 (11, '5', '04/10/2024', '08:47', '21:47', NULL, '2024-10-04 09:47:29', '2024-10-04 09:47:29'),
-(12, '5', '05/10/2024', '09:51', '19:51', NULL, '2024-10-04 09:52:01', '2024-10-04 09:52:01');
+(12, '5', '05/10/2024', '09:51', '19:51', NULL, '2024-10-04 09:52:01', '2024-10-04 09:52:01'),
+(13, '5', '11/11/2024', '09:36', '06:36', NULL, '2024-11-10 21:36:20', '2024-11-10 21:36:20'),
+(14, '12', '11/11/2024', '11:53', '06:53', NULL, '2024-11-10 21:53:25', '2024-11-10 21:53:25'),
+(15, '5', '21/11/2024', '23:09', '21:12', NULL, '2024-11-21 09:09:33', '2024-11-21 09:09:33');
 
 -- --------------------------------------------------------
 
@@ -176,9 +179,11 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `customer_id`, `product_type_id`, `quantity`, `price`, `delivery_date`, `status`, `created_at`, `updated_at`) VALUES
 (5, '4', '2', '12', '0', '22/09/2024', '3', '2024-09-16 04:24:14', '2024-09-22 06:12:29'),
-(6, '4', '2', '628', '62800', '04/10/2024', '3', '2024-09-22 06:18:48', '2024-10-04 09:54:00'),
-(7, '4', '2', '628', '0', '273', '1', '2024-09-22 06:19:52', '2024-09-22 06:19:52'),
-(8, '4', '2', '10', '0', '04/10/2024', '1', '2024-10-04 10:45:51', '2024-10-04 10:45:51');
+(9, '6', '2', '12', '1200', '19/11/2024', '1', '2024-11-10 21:35:26', '2024-11-10 21:35:26'),
+(10, '9', '2', '120', '12000', '11/11/2024', '3', '2024-11-10 21:48:33', '2024-11-10 21:48:44'),
+(11, '8', '2', '100', '10000', '08/11/2024', '1', '2024-11-10 21:50:20', '2024-11-10 21:50:20'),
+(12, '4', '2', '45', '0', '21/11/2024', '1', '2024-11-21 09:06:37', '2024-11-21 09:06:37'),
+(13, '4', '3', '10', '0', '22/11/2024', '1', '2024-11-21 09:06:55', '2024-11-21 09:06:55');
 
 -- --------------------------------------------------------
 
@@ -234,7 +239,8 @@ INSERT INTO `products` (`id`, `product_type_id`, `quantity`, `date`, `created_at
 (3, '2', '100', '29/09/2024', '2024-09-29 06:23:09', '2024-09-29 06:23:09'),
 (4, '2', '12', '04/10/2024', '2024-10-04 09:53:35', '2024-10-04 09:53:35'),
 (5, '3', '500', '04/10/2024', '2024-10-04 10:09:49', '2024-10-04 10:09:49'),
-(6, '3', '12', '04/10/2024', '2024-10-04 10:34:00', '2024-10-04 10:34:00');
+(6, '3', '12', '04/10/2024', '2024-10-04 10:34:00', '2024-10-04 10:34:00'),
+(7, '4', '100', '18/11/2024', '2024-11-10 23:48:56', '2024-11-10 23:48:56');
 
 -- --------------------------------------------------------
 
@@ -261,7 +267,8 @@ INSERT INTO `product_materials` (`id`, `product_id`, `material_id`, `quantity`, 
 (4, '4', '2', '2', '2024-10-04 09:53:35', '2024-10-04 09:53:35'),
 (5, '5', '2', '50', '2024-10-04 10:09:49', '2024-10-04 10:09:49'),
 (6, '6', '2', '20', '2024-10-04 10:34:00', '2024-10-04 10:34:00'),
-(7, '6', '3', '10', '2024-10-04 10:34:00', '2024-10-04 10:34:00');
+(7, '6', '3', '10', '2024-10-04 10:34:00', '2024-10-04 10:34:00'),
+(8, '7', '3', '100', '2024-11-10 23:48:58', '2024-11-10 23:48:58');
 
 -- --------------------------------------------------------
 
@@ -285,7 +292,7 @@ CREATE TABLE `product_types` (
 INSERT INTO `product_types` (`id`, `name`, `unit_price`, `quantity`, `created_at`, `updated_at`) VALUES
 (2, 'High', '100', '112', '2024-09-22 04:43:35', '2024-10-04 09:53:35'),
 (3, 'normal', '70', '512', '2024-10-04 10:07:59', '2024-10-04 10:34:00'),
-(4, 'flower', '100', '0', '2024-10-04 10:43:57', '2024-10-04 10:43:57');
+(4, 'flower', '100', '100', '2024-10-04 10:43:57', '2024-11-10 23:48:56');
 
 -- --------------------------------------------------------
 
@@ -308,10 +315,20 @@ CREATE TABLE `raw_materials` (
 --
 
 INSERT INTO `raw_materials` (`id`, `type_id`, `quantity`, `price`, `date`, `created_at`, `updated_at`) VALUES
-(5, '2', '38', '23', '29/09/2024', '2024-09-29 06:18:42', '2024-09-29 06:20:49'),
 (6, '2', '89', '900', '30/09/2024', '2024-09-29 07:12:14', '2024-09-29 07:12:14'),
-(7, '2', '12', '12', '04/10/2024', '2024-10-04 09:55:02', '2024-10-04 09:55:02'),
-(8, '3', '110', '90', '04/10/2024', '2024-10-04 10:31:58', '2024-10-04 10:31:58');
+(8, '3', '110', '90', '04/10/2024', '2024-10-04 10:31:58', '2024-10-04 10:31:58'),
+(10, '4', '145', '250', '02/10/2024', '2024-11-10 21:28:55', '2024-11-10 21:28:55'),
+(11, '5', '400', '350', '03/10/2024', '2024-11-10 21:30:22', '2024-11-10 21:30:22'),
+(12, '6', '142', '700', '04/10/2024', '2024-11-10 21:30:46', '2024-11-10 21:30:46'),
+(13, '7', '400', '150', '08/10/2024', '2024-11-10 21:31:58', '2024-11-10 21:31:58'),
+(14, '8', '200', '400', '17/10/2024', '2024-11-10 21:32:53', '2024-11-10 21:32:53'),
+(15, '9', '500', '50', '18/10/2024', '2024-11-10 21:33:09', '2024-11-10 21:33:09'),
+(16, '10', '700', '40', '19/10/2024', '2024-11-10 21:33:24', '2024-11-10 21:33:24'),
+(17, '11', '450', '1250', '23/10/2024', '2024-11-10 21:33:37', '2024-11-10 21:33:37'),
+(18, '12', '400', '1150', '29/10/2024', '2024-11-10 21:33:56', '2024-11-10 21:33:56'),
+(19, '13', '330', '150', '30/10/2024', '2024-11-10 21:34:11', '2024-11-10 21:34:11'),
+(20, '14', '450', '20', '11/09/2024', '2024-11-10 21:34:30', '2024-11-10 21:34:30'),
+(21, '15', '300', '600', '12/11/2024', '2024-11-10 23:47:26', '2024-11-10 23:47:26');
 
 -- --------------------------------------------------------
 
@@ -467,7 +484,9 @@ CREATE TABLE `salaries` (
 
 INSERT INTO `salaries` (`id`, `employee_id`, `month`, `year`, `total_hour`, `regular_hour`, `overtime_hour`, `regular_salary`, `overtime_salary`, `total_salary`, `paid`, `due`, `created_at`, `updated_at`) VALUES
 (1, '5', '9', '2024', '23', NULL, NULL, NULL, NULL, '276', '50', '226', '2024-09-22 07:08:11', '2024-09-22 12:05:55'),
-(2, '5', '10', '2024', '23', NULL, NULL, NULL, NULL, '276', '100', '176', '2024-10-04 09:47:36', '2024-10-04 09:57:33');
+(2, '5', '10', '2024', '23', NULL, NULL, NULL, NULL, '276', '100', '176', '2024-10-04 09:47:36', '2024-10-04 09:57:33'),
+(3, '5', '11', '2024', '3', NULL, NULL, NULL, NULL, '36', '0', '36', '2024-11-10 21:50:39', '2024-11-10 21:50:39'),
+(4, '12', '11', '2024', '0', NULL, NULL, NULL, NULL, '0', '1200', '-1200', '2024-11-10 21:52:24', '2024-11-10 21:52:39');
 
 -- --------------------------------------------------------
 
@@ -506,7 +525,7 @@ INSERT INTO `settings` (`id`, `key`, `value`, `is_active`, `created_at`, `update
 (18, 'instagram_link', 'https://www.instagram.com', 1, '2023-07-03 05:45:16', '2023-12-20 10:38:49'),
 (19, 'linkedin_link', '#', 1, '2023-07-03 05:45:16', '2023-11-02 00:02:56'),
 (20, 'youtube_link', '#', 1, '2023-07-03 05:45:16', '2023-11-02 00:02:56'),
-(21, 'current_amount', '62598', 1, '2023-07-03 05:45:16', '2024-10-04 10:31:58');
+(21, 'current_amount', '68168', 1, '2023-07-03 05:45:16', '2024-11-10 23:47:26');
 
 -- --------------------------------------------------------
 
@@ -534,7 +553,22 @@ INSERT INTO `transactions` (`id`, `amount`, `order_id`, `employee_id`, `raw_mate
 (1, '100', '', '5', '', 'salary', '0', '2024-10-04 09:48:07', '2024-10-04 09:48:07'),
 (2, '62800', '6', '', '', 'order_completed', '1', '2024-10-04 09:54:00', '2024-10-04 09:54:00'),
 (3, '12', '', '', '7', 'raw_material', '0', '2024-10-04 09:55:02', '2024-10-04 09:55:02'),
-(4, '90', '', '', '8', 'raw_material', '0', '2024-10-04 10:31:58', '2024-10-04 10:31:58');
+(4, '90', '', '', '8', 'raw_material', '0', '2024-10-04 10:31:58', '2024-10-04 10:31:58'),
+(5, '120', '', '', '9', 'raw_material', '0', '2024-11-10 21:23:12', '2024-11-10 21:23:12'),
+(6, '250', '', '', '10', 'raw_material', '0', '2024-11-10 21:28:55', '2024-11-10 21:28:55'),
+(7, '350', '', '', '11', 'raw_material', '0', '2024-11-10 21:30:22', '2024-11-10 21:30:22'),
+(8, '700', '', '', '12', 'raw_material', '0', '2024-11-10 21:30:46', '2024-11-10 21:30:46'),
+(9, '150', '', '', '13', 'raw_material', '0', '2024-11-10 21:31:58', '2024-11-10 21:31:58'),
+(10, '400', '', '', '14', 'raw_material', '0', '2024-11-10 21:32:53', '2024-11-10 21:32:53'),
+(11, '50', '', '', '15', 'raw_material', '0', '2024-11-10 21:33:09', '2024-11-10 21:33:09'),
+(12, '40', '', '', '16', 'raw_material', '0', '2024-11-10 21:33:24', '2024-11-10 21:33:24'),
+(13, '1250', '', '', '17', 'raw_material', '0', '2024-11-10 21:33:37', '2024-11-10 21:33:37'),
+(14, '1150', '', '', '18', 'raw_material', '0', '2024-11-10 21:33:56', '2024-11-10 21:33:56'),
+(15, '150', '', '', '19', 'raw_material', '0', '2024-11-10 21:34:11', '2024-11-10 21:34:11'),
+(16, '20', '', '', '20', 'raw_material', '0', '2024-11-10 21:34:30', '2024-11-10 21:34:30'),
+(17, '12000', '10', '', '', 'order_completed', '1', '2024-11-10 21:48:44', '2024-11-10 21:48:44'),
+(18, '1200', '', '12', '', 'salary', '0', '2024-11-10 21:52:39', '2024-11-10 21:52:39'),
+(19, '600', '', '', '21', 'raw_material', '0', '2024-11-10 23:47:26', '2024-11-10 23:47:26');
 
 -- --------------------------------------------------------
 
@@ -555,8 +589,20 @@ CREATE TABLE `type_of_raw_materials` (
 --
 
 INSERT INTO `type_of_raw_materials` (`id`, `name`, `quantity`, `created_at`, `updated_at`) VALUES
-(2, 'Bamboo', '62', '2024-05-25 10:12:10', '2024-10-04 10:34:00'),
-(3, 'plastic', '100', '2024-10-04 10:31:15', '2024-10-04 10:34:00');
+(2, 'Bamboo', '12', '2024-05-25 10:12:10', '2024-11-10 21:21:34'),
+(3, 'plastic', '0', '2024-10-04 10:31:15', '2024-11-10 23:48:58'),
+(4, 'steel', '145', '2024-11-10 21:21:13', '2024-11-10 21:29:10'),
+(5, 'wood', '400', '2024-11-10 21:23:48', '2024-11-10 21:30:22'),
+(6, 'oil', '142', '2024-11-10 21:23:58', '2024-11-10 21:30:46'),
+(7, 'corn', '400', '2024-11-10 21:24:07', '2024-11-10 21:31:58'),
+(8, 'Grain', '200', '2024-11-10 21:24:25', '2024-11-10 21:32:53'),
+(9, 'rubber', '500', '2024-11-10 21:24:42', '2024-11-10 21:33:09'),
+(10, 'cotton', '700', '2024-11-10 21:24:50', '2024-11-10 21:33:24'),
+(11, 'leather', '450', '2024-11-10 21:25:09', '2024-11-10 21:33:37'),
+(12, 'Natural gas', '400', '2024-11-10 21:27:27', '2024-11-10 21:33:56'),
+(13, 'coal', '330', '2024-11-10 21:27:36', '2024-11-10 21:34:11'),
+(14, 'minerals', '450', '2024-11-10 21:28:04', '2024-11-10 21:34:30'),
+(15, 'jute', '300', '2024-11-10 23:46:11', '2024-11-10 23:47:26');
 
 -- --------------------------------------------------------
 
@@ -586,10 +632,18 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `name`, `email`, `phone`, `role`, `profile_image`, `password`, `department`, `position`, `salary`, `created_at`, `updated_at`) VALUES
-(1, 'akij', 'group', NULL, 'admin@gmail.com', '01847382920', 1, 'uploads/user-images/17148949676637387733b58portrait-man-laughing.jpg', '$2y$12$K7rMiTEm.yX3wY09/.OI3eq36bSLJb4tma1MkfwfuCQ7LwCK0H2u6', NULL, NULL, NULL, '2023-05-07 11:15:50', '2024-10-04 10:16:31'),
-(4, NULL, NULL, 'hymi@mailinator.com', 'user@gmail.com', 'beremo@mailinator.com', 3, 'uploads/customer-images/172647285966e7e29b81396aaaa.jpg', '$2y$12$K7rMiTEm.yX3wY09/.OI3eq36bSLJb4tma1MkfwfuCQ7LwCK0H2u6', NULL, NULL, NULL, '2024-09-16 01:47:39', '2024-09-16 02:40:32'),
-(5, NULL, NULL, 'wawo@mailinator.com', 'lowehu@mailinator.com', 'nynuv@mailinator.com', 2, 'uploads/employee-images/172700837766f00e79ce98cmern-stack (1).png', NULL, 'tiwawadif@mailinator.com', 'quvajuqi@mailinator.com', '12', '2024-09-22 06:32:57', '2024-09-22 06:32:57'),
-(6, NULL, NULL, 'lipu', 'sunpop12@gmail.com', '0101325231', 3, 'uploads/customer-images/1728058813670015bd29448IMG_8791.JPG', '$2y$12$9EldbqjtMgN.aGLfZY0UeOiTW27SwThgss2WtQvJ9U7sAPTbNvn36', NULL, NULL, NULL, '2024-10-04 10:20:13', '2024-10-04 10:20:13');
+(1, 'LZ', 'group', NULL, 'admin@gmail.com', '01847382920', 1, 'uploads/user-images/173129659867317d5698cffdownload (3).jpg', '$2y$12$K7rMiTEm.yX3wY09/.OI3eq36bSLJb4tma1MkfwfuCQ7LwCK0H2u6', NULL, NULL, NULL, '2023-05-07 11:15:50', '2024-11-10 21:44:11'),
+(4, NULL, NULL, 'hymi@mailinator.com', 'user@gmail.com', '017122434651', 3, 'uploads/customer-images/172647285966e7e29b81396aaaa.jpg', '$2y$12$GxGufTyzYXGx/TEh1EvXHe14cwpCnmGL5qX8Aov72PugU2MMDD246', NULL, NULL, NULL, '2024-09-16 01:47:39', '2024-11-10 21:45:12'),
+(5, NULL, NULL, 'wawo@mailinator.com', 'lowehu@mailinator.com', '0138756542', 2, 'uploads/employee-images/172700837766f00e79ce98cmern-stack (1).png', NULL, 'tiwawadif@mailinator.com', 'quvajuqi@mailinator.com', '12', '2024-09-22 06:32:57', '2024-11-10 23:34:51'),
+(6, NULL, NULL, 'lipu', 'sunpop12@gmail.com', '0101325231', 3, 'uploads/customer-images/1728058813670015bd29448IMG_8791.JPG', '$2y$12$9EldbqjtMgN.aGLfZY0UeOiTW27SwThgss2WtQvJ9U7sAPTbNvn36', NULL, NULL, NULL, '2024-10-04 10:20:13', '2024-10-04 10:20:13'),
+(7, NULL, NULL, 'armin', 'company@example.com', '0101325231', 3, 'uploads/customer-images/173129668667317daed3dadViolet-Social-Picture3-scaled-575x550.jpg', '$2y$12$PJWygczixg1sEk//0PgVAuF.KIRdDMMNCvFtjfw0ds8r4SUck5v72', NULL, NULL, NULL, '2024-11-10 21:44:46', '2024-11-10 21:44:46'),
+(8, NULL, NULL, 'MD SUNIT', 'superadmin@example.com', '01743459842', 3, 'uploads/customer-images/173129674067317de4e681bimages (2).jpg', '$2y$12$efAFblSuEbKCfZIv40KDh.9Ed7pXii2HdnPcCp6OYOOhH/tN.ilki', NULL, NULL, NULL, '2024-11-10 21:45:40', '2024-11-10 21:45:40'),
+(9, NULL, NULL, 'SAGOR', 'sagor1232@gmail.com', '01423579512', 3, 'uploads/customer-images/173129679167317e17cc8bbimages (1).jpg', '$2y$12$asat1l9ukFKuakk7GiYLuOaPnrUCdYkxXroEoBo1oqloihD2VZ3mq', NULL, NULL, NULL, '2024-11-10 21:46:31', '2024-11-10 21:46:31'),
+(10, NULL, NULL, 'Arnob', 'arnob123@gmail.com', '012375894561', 3, 'uploads/customer-images/173129683467317e426aac1download.jpg', '$2y$12$Z5KTjcgCE8YEgBbfbiOiheQcn5GBCAY3GQlxMESMDePjoa17VhMhy', NULL, NULL, NULL, '2024-11-10 21:47:14', '2024-11-10 21:47:14'),
+(11, NULL, NULL, 'asha', 'asha142@gmail.com', '01720132451', 3, 'uploads/customer-images/173129687767317e6da2ac8images.jpg', '$2y$12$cNgDUSa8.esi.nitmx7FiudtLtCUlgDrDXdN9a6NRXT5jMs2ZWOxO', NULL, NULL, NULL, '2024-11-10 21:47:57', '2024-11-10 21:47:57'),
+(12, NULL, NULL, 'aminul', 'tasi12@gmail.com', '01423569874', 2, 'uploads/employee-images/173129712567317f6513d39images (1).jpg', NULL, 'account', '2nd', '25000', '2024-11-10 21:52:05', '2024-11-10 21:52:05'),
+(13, NULL, NULL, 'Rajchakraborti', 'raja12@gmail.com', '01339954261', 2, 'uploads/employee-images/17313022156731934767e2c75400afd-dfeb-4e0c-a4c9-803262517e5b.jpg', NULL, 'order', 'junior clark', '15000', '2024-11-10 23:16:55', '2024-11-10 23:16:55'),
+(14, NULL, NULL, 'surojit adikari', 'adikari34@yahoo.com', '01397654432', 2, 'uploads/employee-images/1731303256673197583fd5582b8f0d8-f5a7-477b-b04d-7bf523cf4fcf.jpg', NULL, 'account', 'senior hr', '50000', '2024-11-10 23:34:16', '2024-11-10 23:34:16');
 
 --
 -- Indexes for dumped tables
@@ -729,7 +783,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendances`
 --
 ALTER TABLE `attendances`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -759,7 +813,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -771,13 +825,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `product_materials`
 --
 ALTER TABLE `product_materials`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `product_types`
@@ -789,7 +843,7 @@ ALTER TABLE `product_types`
 -- AUTO_INCREMENT for table `raw_materials`
 --
 ALTER TABLE `raw_materials`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `rights`
@@ -813,7 +867,7 @@ ALTER TABLE `role_rights`
 -- AUTO_INCREMENT for table `salaries`
 --
 ALTER TABLE `salaries`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -825,19 +879,19 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `type_of_raw_materials`
 --
 ALTER TABLE `type_of_raw_materials`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
